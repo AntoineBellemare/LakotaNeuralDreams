@@ -1,0 +1,662 @@
+links:
+- node_in: appendtables1
+  node_out: appendtables0
+  slot_in: table1
+  slot_out: output_table
+- node_in: oscout0
+  node_out: appendtables1
+  slot_in: data
+  slot_out: output_table
+- node_in: embedding0
+  node_out: constantstring0
+  slot_in: text
+  slot_out: out
+- node_in: operation0
+  node_out: embedding0
+  slot_in: b
+  slot_out: text_embeddings
+- node_in: join0
+  node_out: embedding0
+  slot_in: b
+  slot_out: text_embeddings
+- node_in: appendtables0
+  node_out: extendedtable0
+  slot_in: table1
+  slot_out: table
+- node_in: appendtables0
+  node_out: extendedtable1
+  slot_in: table2
+  slot_out: table
+- node_in: select0
+  node_out: loadfile0
+  slot_in: data
+  slot_out: data_output
+- node_in: select2
+  node_out: operation0
+  slot_in: data
+  slot_out: out
+- node_in: select4
+  node_out: operation0
+  slot_in: data
+  slot_out: out
+- node_in: select5
+  node_out: operation0
+  slot_in: data
+  slot_out: out
+- node_in: select6
+  node_out: operation0
+  slot_in: data
+  slot_out: out
+- node_in: select9
+  node_out: operation0
+  slot_in: data
+  slot_out: out
+- node_in: select10
+  node_out: operation0
+  slot_in: data
+  slot_out: out
+- node_in: select11
+  node_out: operation0
+  slot_in: data
+  slot_out: out
+- node_in: select3
+  node_out: operation0
+  slot_in: data
+  slot_out: out
+- node_in: select7
+  node_out: operation0
+  slot_in: data
+  slot_out: out
+- node_in: select8
+  node_out: operation0
+  slot_in: data
+  slot_out: out
+- node_in: select1
+  node_out: operation0
+  slot_in: data
+  slot_out: out
+- node_in: operation0
+  node_out: select0
+  slot_in: a
+  slot_out: out
+- node_in: join0
+  node_out: select0
+  slot_in: a
+  slot_out: out
+- node_in: extendedtable0
+  node_out: select1
+  slot_in: array_input1
+  slot_out: out
+- node_in: extendedtable1
+  node_out: select10
+  slot_in: array_input5
+  slot_out: out
+- node_in: table0
+  node_out: select11
+  slot_in: new_entry
+  slot_out: out
+- node_in: extendedtable0
+  node_out: select2
+  slot_in: array_input2
+  slot_out: out
+- node_in: extendedtable0
+  node_out: select3
+  slot_in: array_input3
+  slot_out: out
+- node_in: extendedtable0
+  node_out: select4
+  slot_in: array_input4
+  slot_out: out
+- node_in: extendedtable0
+  node_out: select5
+  slot_in: array_input5
+  slot_out: out
+- node_in: extendedtable1
+  node_out: select6
+  slot_in: array_input1
+  slot_out: out
+- node_in: extendedtable1
+  node_out: select7
+  slot_in: array_input2
+  slot_out: out
+- node_in: extendedtable1
+  node_out: select8
+  slot_in: array_input3
+  slot_out: out
+- node_in: extendedtable1
+  node_out: select9
+  slot_in: array_input4
+  slot_out: out
+- node_in: appendtables1
+  node_out: table0
+  slot_in: table2
+  slot_out: table
+nodes:
+  appendtables0:
+    _type: AppendTables
+    category: misc
+    gui_kwargs:
+      pos:
+      - 1760
+      - 52
+      viewers:
+        output_table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+  appendtables1:
+    _type: AppendTables
+    category: misc
+    gui_kwargs:
+      pos:
+      - 1897
+      - 302
+      viewers:
+        output_table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+  constantstring0:
+    _type: ConstantString
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -4
+      - 295
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      constant:
+        value: cross
+  embedding0:
+    _type: Embedding
+    category: analysis
+    gui_kwargs:
+      pos:
+      - 265
+      - 208
+      viewers:
+        data_embeddings:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        text_embeddings:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      embedding:
+        model: laion/CLIP-ViT-H-14-laion2B-s32B-b79K
+  extendedtable0:
+    _type: ExtendedTable
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 1537
+      - -347
+      viewers:
+        table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      table:
+        param1: s1
+        param10: value10
+        param2: s2
+        param3: s3
+        param4: s4
+        param5: s5
+        param6: value6
+        param7: value7
+        param8: value8
+        param9: value9
+  extendedtable1:
+    _type: ExtendedTable
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 1536
+      - 47
+      viewers:
+        table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      table:
+        param1: s6
+        param10: value10
+        param2: s7
+        param3: s8
+        param4: s9
+        param5: s10
+        param6: value6
+        param7: value7
+        param8: value8
+        param9: value9
+  join0:
+    _type: Join
+    category: array
+    gui_kwargs:
+      pos:
+      - 496
+      - 289
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 1.0
+      join:
+        axis: 0
+        method: concatenate
+  loadfile0:
+    _type: LoadFile
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -6
+      - 12
+      viewers:
+        data_output:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      file:
+        filename: symbols_vecs.csv
+        freq_multiplier: 1.0
+        type: ndarray
+  operation0:
+    _type: Operation
+    category: array
+    gui_kwargs:
+      pos:
+      - 500
+      - 72
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      operation:
+        operation: cosine_similarity
+  oscout0:
+    _type: OSCOut
+    category: outputs
+    gui_kwargs:
+      pos:
+      - 2131
+      - 327
+      viewers: {}
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      osc:
+        address: localhost
+        broadcast: false
+        bundle: false
+        port: 8000
+        prefix: /goofi
+  select0:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 266
+      - -133
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: '0'
+        include: ''
+  select1:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 757
+      - -229
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '0'
+  select10:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1284
+      - -47
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '9'
+  select11:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1277
+      - 159
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '10'
+  select2:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 760
+      - -32
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '1'
+  select3:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 765
+      - 169
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '2'
+  select4:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 764
+      - 377
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '3'
+  select5:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1050
+      - -250
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '4'
+  select6:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1049
+      - -50
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '5'
+  select7:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1041
+      - 158
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '6'
+  select8:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1036
+      - 369
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '7'
+  select9:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1285
+      - -247
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '8'
+  table0:
+    _type: Table
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 1528
+      - 464
+      viewers:
+        table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      table:
+        new_entry_key: s11
