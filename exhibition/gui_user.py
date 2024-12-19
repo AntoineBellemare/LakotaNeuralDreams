@@ -32,7 +32,7 @@ class LatentDreamscapeGUI:
         self.pen_color = "black"           # Default pen color
         self.eraser_mode = False           # Eraser state
 
-        self.load_symbols("dream_language/no_bg_square")
+        self.load_symbols("../dream_language_symbols/no_bg_square")
         
         self.action_stack = []  # Stack to track actions for undo
         
@@ -220,7 +220,7 @@ class LatentDreamscapeGUI:
         if hasattr(self, 'selected_symbol') and self.selected_symbol:
             symbol_size = self.symbol_size.get()
             rotation_angle = self.rotation_angle.get()  # Get the current rotation angle
-            img_path = os.path.join("dream_language/no_bg_square", f"{self.selected_symbol}.png")
+            img_path = os.path.join("../dream_language_symbols/no_bg_square", f"{self.selected_symbol}.png")
 
             try:
                 img = Image.open(img_path).resize((symbol_size, symbol_size), Image.Resampling.LANCZOS)
@@ -247,7 +247,7 @@ class LatentDreamscapeGUI:
         if hasattr(self, 'temp_symbol'):
             symbol_size = self.symbol_size.get()
             rotation_angle = self.rotation_angle.get()
-            img_path = os.path.join("dream_language/no_bg_square", f"{self.selected_symbol}.png")
+            img_path = os.path.join("../dream_language_symbols/no_bg_square", f"{self.selected_symbol}.png")
             
             try:
                 img = Image.open(img_path).resize((symbol_size, symbol_size), Image.Resampling.LANCZOS)
