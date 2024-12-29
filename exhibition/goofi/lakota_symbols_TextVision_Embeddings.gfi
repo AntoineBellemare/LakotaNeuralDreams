@@ -3,6 +3,14 @@ links:
   node_out: appendtables0
   slot_in: table1
   slot_out: output_table
+- node_in: appendtables2
+  node_out: appendtables1
+  slot_in: table1
+  slot_out: output_table
+- node_in: oscout0
+  node_out: appendtables2
+  slot_in: data
+  slot_out: output_table
 - node_in: embedding0
   node_out: constantstring0
   slot_in: text
@@ -31,26 +39,14 @@ links:
   node_out: extendedtable1
   slot_in: table2
   slot_out: table
-- node_in: pca0
+- node_in: dimensionalityreduction1
   node_out: join0
   slot_in: data
   slot_out: out
-- node_in: pca1
+- node_in: dimensionalityreduction0
   node_out: join1
   slot_in: data
   slot_out: out
-- node_in: select0
-  node_out: loadfile0
-  slot_in: data
-  slot_out: data_output
-- node_in: operation0
-  node_out: loadfile1
-  slot_in: a
-  slot_out: data_output
-- node_in: join1
-  node_out: loadfile1
-  slot_in: a
-  slot_out: data_output
 - node_in: reduce1
   node_out: operation0
   slot_in: array
@@ -63,14 +59,6 @@ links:
   node_out: oscin0
   slot_in: input_table
   slot_out: message
-- node_in: transpose0
-  node_out: pca0
-  slot_in: array
-  slot_out: principal_components
-- node_in: transpose1
-  node_out: pca1
-  slot_in: array
-  slot_out: principal_components
 - node_in: table1
   node_out: reduce0
   slot_in: new_entry
@@ -86,14 +74,6 @@ links:
 - node_in: join1
   node_out: reshape0
   slot_in: b
-  slot_out: out
-- node_in: join0
-  node_out: select0
-  slot_in: a
-  slot_out: out
-- node_in: operation1
-  node_out: select0
-  slot_in: a
   slot_out: out
 - node_in: extendedtable0
   node_out: select1
@@ -151,14 +131,34 @@ links:
   node_out: transpose1
   slot_in: data
   slot_out: out
-- node_in: appendtables2
-  node_out: appendtables1
-  slot_in: table1
-  slot_out: output_table
-- node_in: oscout0
-  node_out: appendtables2
+- node_in: operation0
+  node_out: loadfile0
+  slot_in: a
+  slot_out: data_output
+- node_in: join1
+  node_out: loadfile0
+  slot_in: a
+  slot_out: data_output
+- node_in: transpose1
+  node_out: dimensionalityreduction0
+  slot_in: array
+  slot_out: transformed
+- node_in: transpose0
+  node_out: dimensionalityreduction1
+  slot_in: array
+  slot_out: transformed
+- node_in: select0
+  node_out: loadfile1
   slot_in: data
-  slot_out: output_table
+  slot_out: data_output
+- node_in: operation1
+  node_out: select0
+  slot_in: a
+  slot_out: out
+- node_in: join0
+  node_out: select0
+  slot_in: a
+  slot_out: out
 nodes:
   appendtables0:
     _type: AppendTables
@@ -184,8 +184,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - 1637
-      - 474
+      - 1639
+      - 437
       viewers:
         output_table:
           collapsed: false
@@ -208,11 +208,11 @@ nodes:
       viewers:
         output_table:
           collapsed: false
-          height: 100
+          height: 160
           log_scale_x: false
           log_scale_y: false
           viewer_idx: 0
-          width: 175
+          width: 235
     params:
       common:
         autotrigger: false
@@ -222,8 +222,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -943
-      - -274
+      - -1098
+      - -280
       viewers:
         out:
           collapsed: false
@@ -237,14 +237,64 @@ nodes:
         autotrigger: true
         max_frequency: 30.0
       constant:
-        value: memories of the future are quiet for the fish
+        value: hello why not, mu name
+  dimensionalityreduction0:
+    _type: DimensionalityReduction
+    category: analysis
+    gui_kwargs:
+      pos:
+      - -136
+      - 386
+      viewers:
+        transformed:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      Control:
+        method: t-SNE
+        n_components: 3
+        reset: false
+        tsne_perplexity: 6.0
+        umap_neighbors: 6.0
+      common:
+        autotrigger: false
+        max_frequency: 1.0
+  dimensionalityreduction1:
+    _type: DimensionalityReduction
+    category: analysis
+    gui_kwargs:
+      pos:
+      - 766
+      - 33
+      viewers:
+        transformed:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      Control:
+        method: t-SNE
+        n_components: 3
+        reset: true
+        tsne_perplexity: 6.0
+        umap_neighbors: 15.0
+      common:
+        autotrigger: false
+        max_frequency: 30.0
   embedding0:
     _type: Embedding
     category: analysis
     gui_kwargs:
       pos:
-      - 295
-      - -175
+      - 219
+      - -332
       viewers:
         data_embeddings:
           collapsed: false
@@ -266,13 +316,14 @@ nodes:
         max_frequency: 30.0
       embedding:
         model: laion/CLIP-ViT-H-14-laion2B-s32B-b79K
+        split_by_comma: false
   embedding1:
     _type: Embedding
     category: analysis
     gui_kwargs:
       pos:
-      - -672
-      - 96
+      - -728
+      - 110
       viewers:
         data_embeddings:
           collapsed: false
@@ -294,6 +345,7 @@ nodes:
         max_frequency: 30.0
       embedding:
         model: all-MiniLM-L6-v2
+        split_by_comma: false
   extendedtable0:
     _type: ExtendedTable
     category: inputs
@@ -381,8 +433,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - -415
-      - 380
+      - -348
+      - 403
       viewers:
         out:
           collapsed: false
@@ -403,10 +455,17 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -105
-      - -380
+      - -906
+      - -600
       viewers:
         data_output:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        string_output:
           collapsed: false
           height: 100
           log_scale_x: false
@@ -416,20 +475,31 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 30.0
+        max_frequency: 1.0
       file:
-        filename: symbols_vecs.csv
+        filename: BERT_mean_embeddings.csv
         freq_multiplier: 1.0
+        header: 0
+        index_column: false
+        name_column: false
+        select: ''
         type: ndarray
   loadfile1:
     _type: LoadFile
     category: inputs
     gui_kwargs:
       pos:
-      - -687
-      - -135
+      - -602
+      - -889
       viewers:
         data_output:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        string_output:
           collapsed: false
           height: 100
           log_scale_x: false
@@ -439,10 +509,14 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 30.0
+        max_frequency: 1.0
       file:
-        filename: BERT_mean_embeddings.csv
+        filename: symbols_vecs.csv
         freq_multiplier: 1.0
+        header: 0
+        index_column: false
+        name_column: false
+        select: ''
         type: ndarray
   operation0:
     _type: Operation
@@ -491,8 +565,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -1146
-      - -88
+      - -1321
+      - -103
       viewers:
         message:
           collapsed: false
@@ -513,8 +587,8 @@ nodes:
     category: outputs
     gui_kwargs:
       pos:
-      - 2149
-      - 333
+      - 2162
+      - 755
       viewers: {}
     params:
       common:
@@ -526,58 +600,6 @@ nodes:
         bundle: false
         port: 8000
         prefix: /goofi
-  pca0:
-    _type: PCA
-    category: analysis
-    gui_kwargs:
-      pos:
-      - 763
-      - -115
-      viewers:
-        principal_components:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      Control:
-        buffer_size: 1024.0
-        method: t-SNE
-        n_components: 3.0
-        reset: false
-        tsne_perplexity: 6.0
-        umap_neighbors: 6.0
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-  pca1:
-    _type: PCA
-    category: analysis
-    gui_kwargs:
-      pos:
-      - -195
-      - 381
-      viewers:
-        principal_components:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      Control:
-        buffer_size: 384.0
-        method: t-SNE
-        n_components: 3.0
-        reset: false
-        tsne_perplexity: 6.0
-        umap_neighbors: 15.0
-      common:
-        autotrigger: false
-        max_frequency: 30.0
   reduce0:
     _type: Reduce
     category: array
@@ -627,8 +649,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - -443
-      - 136
+      - -479
+      - 140
       viewers:
         out:
           collapsed: false
@@ -648,8 +670,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 109
-      - -374
+      - -236
+      - -763
       viewers:
         out:
           collapsed: false
@@ -664,7 +686,7 @@ nodes:
         max_frequency: 30.0
       select:
         axis: 0
-        exclude: '0'
+        exclude: ''
         include: ''
   select1:
     _type: Select
@@ -786,8 +808,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 280
-      - 769
+      - 279
+      - 768
       viewers:
         out:
           collapsed: false
@@ -851,8 +873,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - -941
-      - -93
+      - -1095
+      - -92
       viewers:
         output_string:
           collapsed: false
