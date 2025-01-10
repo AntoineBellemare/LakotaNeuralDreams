@@ -1,0 +1,1270 @@
+links:
+- node_in: appendtables1
+  node_out: appendtables0
+  slot_in: table1
+  slot_out: output_table
+- node_in: appendtables2
+  node_out: appendtables1
+  slot_in: table1
+  slot_out: output_table
+- node_in: oscout0
+  node_out: appendtables2
+  slot_in: data
+  slot_out: output_table
+- node_in: switch0
+  node_out: constantarray0
+  slot_in: selector
+  slot_out: out
+- node_in: embedding0
+  node_out: constantstring0
+  slot_in: text
+  slot_out: out
+- node_in: embedding1
+  node_out: constantstring0
+  slot_in: text
+  slot_out: out
+- node_in: transpose1
+  node_out: dimensionalityreduction0
+  slot_in: array
+  slot_out: new_components
+- node_in: join0
+  node_out: embedding0
+  slot_in: b
+  slot_out: text_embeddings
+- node_in: operation1
+  node_out: embedding0
+  slot_in: b
+  slot_out: text_embeddings
+- node_in: switch0
+  node_out: embedding1
+  slot_in: array1
+  slot_out: text_embeddings
+- node_in: switch0
+  node_out: embedding1
+  slot_in: array2
+  slot_out: data_embeddings
+- node_in: appendtables0
+  node_out: extendedtable0
+  slot_in: table2
+  slot_out: table
+- node_in: appendtables2
+  node_out: extendedtable1
+  slot_in: table2
+  slot_out: table
+- node_in: dimensionalityreduction0
+  node_out: join1
+  slot_in: new_data
+  slot_out: out
+- node_in: operation0
+  node_out: loadfile0
+  slot_in: a
+  slot_out: data_output
+- node_in: join1
+  node_out: loadfile0
+  slot_in: a
+  slot_out: data_output
+- node_in: dimensionalityreduction0
+  node_out: loadfile0
+  slot_in: data
+  slot_out: data_output
+- node_in: select0
+  node_out: loadfile1
+  slot_in: data
+  slot_out: data_output
+- node_in: reduce1
+  node_out: operation0
+  slot_in: array
+  slot_out: out
+- node_in: reduce0
+  node_out: operation1
+  slot_in: array
+  slot_out: out
+- node_in: tableselectstring0
+  node_out: oscin0
+  slot_in: input_table
+  slot_out: message
+- node_in: table1
+  node_out: reduce0
+  slot_in: new_entry
+  slot_out: out
+- node_in: table0
+  node_out: reduce1
+  slot_in: new_entry
+  slot_out: out
+- node_in: operation0
+  node_out: reshape0
+  slot_in: b
+  slot_out: out
+- node_in: join1
+  node_out: reshape0
+  slot_in: b
+  slot_out: out
+- node_in: operation1
+  node_out: select0
+  slot_in: a
+  slot_out: out
+- node_in: join0
+  node_out: select0
+  slot_in: a
+  slot_out: out
+- node_in: extendedtable0
+  node_out: select1
+  slot_in: array_input1
+  slot_out: out
+- node_in: extendedtable0
+  node_out: select2
+  slot_in: array_input2
+  slot_out: out
+- node_in: extendedtable0
+  node_out: select3
+  slot_in: array_input3
+  slot_out: out
+- node_in: extendedtable1
+  node_out: select4
+  slot_in: array_input1
+  slot_out: out
+- node_in: extendedtable1
+  node_out: select5
+  slot_in: array_input2
+  slot_out: out
+- node_in: extendedtable1
+  node_out: select6
+  slot_in: array_input3
+  slot_out: out
+- node_in: extendedtable1
+  node_out: select7
+  slot_in: array_input4
+  slot_out: out
+- node_in: select4
+  node_out: select8
+  slot_in: data
+  slot_out: out
+- node_in: select5
+  node_out: select8
+  slot_in: data
+  slot_out: out
+- node_in: select6
+  node_out: select8
+  slot_in: data
+  slot_out: out
+- node_in: reshape0
+  node_out: switch0
+  slot_in: array
+  slot_out: array_out
+- node_in: appendtables1
+  node_out: table0
+  slot_in: table2
+  slot_out: table
+- node_in: appendtables0
+  node_out: table1
+  slot_in: table1
+  slot_out: table
+- node_in: select1
+  node_out: transpose0
+  slot_in: data
+  slot_out: out
+- node_in: select2
+  node_out: transpose0
+  slot_in: data
+  slot_out: out
+- node_in: select3
+  node_out: transpose0
+  slot_in: data
+  slot_out: out
+- node_in: select7
+  node_out: transpose1
+  slot_in: data
+  slot_out: out
+- node_in: select8
+  node_out: transpose1
+  slot_in: data
+  slot_out: out
+- node_in: reduce2
+  node_out: lslclient0
+  slot_in: array
+  slot_out: out
+- node_in: buffer0
+  node_out: reduce2
+  slot_in: val
+  slot_out: out
+- node_in: psd0
+  node_out: buffer0
+  slot_in: data
+  slot_out: out
+- node_in: powerbandeeg0
+  node_out: psd0
+  slot_in: data
+  slot_out: psd
+- node_in: operation2
+  node_out: powerbandeeg0
+  slot_in: a
+  slot_out: theta
+- node_in: operation2
+  node_out: powerbandeeg0
+  slot_in: b
+  slot_out: alpha
+nodes:
+  appendtables0:
+    _type: AppendTables
+    category: misc
+    gui_kwargs:
+      pos:
+      - 1654
+      - 52
+      viewers:
+        output_table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+  appendtables1:
+    _type: AppendTables
+    category: misc
+    gui_kwargs:
+      pos:
+      - 1639
+      - 437
+      viewers:
+        output_table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+  appendtables2:
+    _type: AppendTables
+    category: misc
+    gui_kwargs:
+      pos:
+      - 1852
+      - 640
+      viewers:
+        output_table:
+          collapsed: false
+          height: 130
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 205
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+  buffer0:
+    _type: Buffer
+    category: signal
+    gui_kwargs:
+      pos:
+      - 629
+      - 1314
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      buffer:
+        axis: -1
+        reset: false
+        size: 320
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+  constantarray0:
+    _type: ConstantArray
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -309
+      - 927
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      constant:
+        graph: none
+        shape: '1'
+        value: 1.0
+  constantstring0:
+    _type: ConstantString
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 184
+      - 236
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      constant:
+        value: The earth was cooling, and the fire was dancing
+  dimensionalityreduction0:
+    _type: DimensionalityReduction
+    category: analysis
+    gui_kwargs:
+      pos:
+      - 791
+      - 737
+      viewers:
+        new_components:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        transformed:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      Control:
+        method: UMAP
+        n_components: 3
+        reset: true
+        tsne_perplexity: 30.0
+        umap_neighbors: 7.0
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+  eegrecording0:
+    _type: EEGRecording
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 196
+      - 1234
+      viewers: {}
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      recording:
+        file_path: ''
+        file_sfreq: 256.0
+        source_name: goofi
+        stream_name: recording
+        use_example_data: true
+  embedding0:
+    _type: Embedding
+    category: analysis
+    gui_kwargs:
+      pos:
+      - 219
+      - -332
+      viewers:
+        data_embeddings:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        text_embeddings:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      embedding:
+        model: laion/CLIP-ViT-H-14-laion2B-s32B-b79K
+        split_by_comma: false
+  embedding1:
+    _type: Embedding
+    category: analysis
+    gui_kwargs:
+      pos:
+      - -42
+      - 739
+      viewers:
+        data_embeddings:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        text_embeddings:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      embedding:
+        model: openai/clip-vit-base-patch32
+        split_by_comma: false
+  extendedtable0:
+    _type: ExtendedTable
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 1412
+      - 111
+      viewers:
+        table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      table:
+        param1: x_vis
+        param10: value10
+        param2: y_vis
+        param3: z_vis
+        param4: value4
+        param5: value5
+        param6: value6
+        param7: value7
+        param8: value8
+        param9: value9
+  extendedtable1:
+    _type: ExtendedTable
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 1637
+      - 727
+      viewers:
+        table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      table:
+        param1: xs_txt
+        param10: value10
+        param2: ys_txt
+        param3: zs_txt
+        param4: rt_coord
+        param5: value5
+        param6: value6
+        param7: value7
+        param8: value8
+        param9: value9
+  join0:
+    _type: Join
+    category: array
+    gui_kwargs:
+      pos:
+      - 549
+      - -126
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 1.0
+      join:
+        axis: 0
+        method: concatenate
+  join1:
+    _type: Join
+    category: array
+    gui_kwargs:
+      pos:
+      - 584
+      - 733
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      join:
+        axis: 0
+        method: concatenate
+  loadfile0:
+    _type: LoadFile
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -33
+      - 432
+      viewers:
+        data_output:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        string_output:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 1.0
+      file:
+        filename: clip32_mean_embeddings.csv
+        freq_multiplier: 1.0
+        header: 0
+        index_column: true
+        name_column: false
+        select: ''
+        type: embedding_csv
+  loadfile1:
+    _type: LoadFile
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -2
+      - -639
+      viewers:
+        data_output:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        string_output:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 1.0
+      file:
+        filename: symbols_vecs.csv
+        freq_multiplier: 1.0
+        header: 0
+        index_column: false
+        name_column: false
+        select: ''
+        type: ndarray
+  lslclient0:
+    _type: LSLClient
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 194
+      - 1304
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      lsl_stream:
+        refresh: false
+        source_name: goofi
+        stream_name: ''
+  operation0:
+    _type: Operation
+    category: array
+    gui_kwargs:
+      pos:
+      - 380
+      - 438
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      operation:
+        operation: cosine_similarity
+  operation1:
+    _type: Operation
+    category: array
+    gui_kwargs:
+      pos:
+      - 535
+      - -374
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      operation:
+        operation: cosine_similarity
+  operation2:
+    _type: Operation
+    category: array
+    gui_kwargs:
+      pos:
+      - 1294
+      - 1417
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      operation:
+        operation: divide
+  oscin0:
+    _type: OSCIn
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -636
+      - 185
+      viewers:
+        message:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      osc:
+        address: 0.0.0.0
+        port: 9000
+  oscout0:
+    _type: OSCOut
+    category: outputs
+    gui_kwargs:
+      pos:
+      - 2162
+      - 755
+      viewers: {}
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      osc:
+        address: localhost
+        broadcast: false
+        bundle: false
+        port: 8000
+        prefix: /goofi
+  powerbandeeg0:
+    _type: PowerBandEEG
+    category: analysis
+    gui_kwargs:
+      pos:
+      - 1057
+      - 1324
+      viewers:
+        alpha:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        delta:
+          collapsed: true
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        gamma:
+          collapsed: true
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        highbeta:
+          collapsed: true
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        lowbeta:
+          collapsed: true
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        theta:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      powerband:
+        power_type: absolute
+  psd0:
+    _type: PSD
+    category: signal
+    gui_kwargs:
+      pos:
+      - 844
+      - 1319
+      viewers:
+        psd:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      psd:
+        f_max: 60.0
+        f_min: 1.0
+        method: welch
+        noverlap: 0
+        precision: 0.1
+        smooth_welch: 1
+  reduce0:
+    _type: Reduce
+    category: array
+    gui_kwargs:
+      pos:
+      - 741
+      - -368
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      reduce:
+        axis: 1
+        method: mean
+  reduce1:
+    _type: Reduce
+    category: array
+    gui_kwargs:
+      pos:
+      - 600
+      - 443
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      reduce:
+        axis: 1
+        method: mean
+  reduce2:
+    _type: Reduce
+    category: array
+    gui_kwargs:
+      pos:
+      - 410
+      - 1308
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      reduce:
+        axis: 0
+        method: mean
+  reshape0:
+    _type: Reshape
+    category: array
+    gui_kwargs:
+      pos:
+      - 377
+      - 745
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      reshape:
+        shape: 1, -1
+  select0:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 217
+      - -640
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: ''
+  select1:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1192
+      - 111
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '0'
+  select2:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1192
+      - 307
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '1'
+  select3:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1194
+      - 502
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '2'
+  select4:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1417
+      - 727
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '0'
+  select5:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1417
+      - 923
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '1'
+  select6:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1418
+      - 1117
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 0
+        exclude: ''
+        include: '2'
+  select7:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1193
+      - 1121
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 1
+        exclude: ''
+        include: '-1'
+  select8:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1210
+      - 733
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 1
+        exclude: ''
+        include: :-1
+  switch0:
+    _type: Switch
+    category: misc
+    gui_kwargs:
+      pos:
+      - 174
+      - 738
+      viewers:
+        array_out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        string_out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      settings:
+        mode: array
+  table0:
+    _type: Table
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 808
+      - 448
+      viewers:
+        table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      table:
+        new_entry_key: ranking_text
+  table1:
+    _type: Table
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 949
+      - -363
+      viewers:
+        table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      table:
+        new_entry_key: ranking_visual
+  tableselectstring0:
+    _type: TableSelectString
+    category: misc
+    gui_kwargs:
+      pos:
+      - -410
+      - 196
+      viewers:
+        output_string:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      selection:
+        key: /text_input
+  transpose0:
+    _type: Transpose
+    category: array
+    gui_kwargs:
+      pos:
+      - 988
+      - 113
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+  transpose1:
+    _type: Transpose
+    category: array
+    gui_kwargs:
+      pos:
+      - 1004
+      - 735
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+  videostream0:
+    _type: VideoStream
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -310
+      - 732
+      viewers:
+        frame:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 1
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      video_stream:
+        capture_mode: screen
+        crop_down: 0
+        crop_left: 0
+        crop_right: 0
+        crop_top: 0
+        device_index: 0
+        mirror: true
+        screen_index: 1
+        screen_region: full
