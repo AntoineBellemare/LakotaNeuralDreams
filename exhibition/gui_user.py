@@ -25,7 +25,7 @@ class LatentDreamscapeGUI:
         self.client = OSCClient(self.osc_address.encode(), self.send_port)
         self.server = OSCThreadServer()
         self.server.listen(address=self.osc_address.encode(), port=self.receive_port, default=True)
-        self.server.bind(b"/eeg_status", self.eeg_status_callback)
+        
 
         # Default pen settings
         self.pen_size = tk.IntVar(value=3)  # Default pen size
@@ -40,6 +40,7 @@ class LatentDreamscapeGUI:
         
         # GUI Components
         self.setup_gui()
+        self.server.bind(b"/eeg_status", self.eeg_status_callback)
         self.check_inactivity()
 
     def setup_gui(self):
@@ -330,17 +331,34 @@ class LatentDreamscapeGUI:
 
     def update_eeg_status(self, status):
         """Update EEG status light."""
-        color = "green" if status == 1 else "red"
+        if not hasattr(self, "eeg_status_canvas"):
+            print("EEG status canvas is not initialized yet.")
+            return
+        
+        color = "red"  # Default color
+        if status == 1:
+            color = "yellow"
+        elif status == 2:
+            color = "green"
+
         self.eeg_status_canvas.delete("all")
         self.eeg_status_canvas.create_oval(10, 10, 50, 50, fill=color)
+
+
 
     def eeg_status_callback(self, status):
         """Callback for EEG status updates."""
         try:
             value = int(status)
-            self.update_eeg_status(value)
+            if 0 <= value <= 2:  # Ensure the value is within the expected range
+                self.root.after(0, self.update_eeg_status, value)  # Schedule GUI update in main thread
+            else:
+                print(f"Unexpected EEG status value: {value}")
         except ValueError:
-            self.update_eeg_status(0)
+            print("Invalid EEG status received.")
+            self.root.after(0, self.update_eeg_status, 0)
+
+
             
     def undo_last_action(self):
         """Undo the last action on the canvas."""
