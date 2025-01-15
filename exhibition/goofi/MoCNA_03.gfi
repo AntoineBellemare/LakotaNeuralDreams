@@ -11,9 +11,25 @@ links:
   node_out: buffer0
   slot_in: data
   slot_out: out
+- node_in: smooth0
+  node_out: buffer1
+  slot_in: data
+  slot_out: out
+- node_in: buffer1
+  node_out: compass0
+  slot_in: val
+  slot_out: angles
 - node_in: switch0
   node_out: constantarray0
   slot_in: selector
+  slot_out: out
+- node_in: table0
+  node_out: constantarray1
+  slot_in: new_entry
+  slot_out: out
+- node_in: compass0
+  node_out: constantarray2
+  slot_in: pole1
   slot_out: out
 - node_in: embedding1
   node_out: constantstring0
@@ -35,10 +51,18 @@ links:
   node_out: extendedtable1
   slot_in: table2
   slot_out: table
+- node_in: reshape1
+  node_out: join0
+  slot_in: array
+  slot_out: out
 - node_in: dimensionalityreduction0
   node_out: join1
   slot_in: new_data
   slot_out: out
+- node_in: welfordsztransform1
+  node_out: lempelziv0
+  slot_in: data
+  slot_out: lzc
 - node_in: join1
   node_out: loadfile0
   slot_in: a
@@ -83,6 +107,10 @@ links:
   node_out: reshape0
   slot_in: b
   slot_out: out
+- node_in: compass0
+  node_out: reshape1
+  slot_in: pole2
+  slot_out: out
 - node_in: extendedtable1
   node_out: select4
   slot_in: array_input1
@@ -115,6 +143,10 @@ links:
   node_out: switch0
   slot_in: array
   slot_out: array_out
+- node_in: oscout1
+  node_out: table0
+  slot_in: data
+  slot_out: table
 - node_in: select7
   node_out: transpose1
   slot_in: data
@@ -123,46 +155,14 @@ links:
   node_out: transpose1
   slot_in: data
   slot_out: out
-- node_in: table0
-  node_out: constantarray1
-  slot_in: new_entry
-  slot_out: out
-- node_in: oscout1
-  node_out: table0
-  slot_in: data
-  slot_out: table
 - node_in: join0
   node_out: welfordsztransform0
   slot_in: a
   slot_out: normalized
-- node_in: welfordsztransform1
-  node_out: lempelziv0
-  slot_in: data
-  slot_out: lzc
 - node_in: join0
   node_out: welfordsztransform1
   slot_in: b
   slot_out: normalized
-- node_in: buffer1
-  node_out: compass0
-  slot_in: val
-  slot_out: angles
-- node_in: compass0
-  node_out: constantarray2
-  slot_in: pole1
-  slot_out: out
-- node_in: reshape1
-  node_out: join0
-  slot_in: array
-  slot_out: out
-- node_in: compass0
-  node_out: reshape1
-  slot_in: pole2
-  slot_out: out
-- node_in: smooth0
-  node_out: buffer1
-  slot_in: data
-  slot_out: out
 nodes:
   appendtables2:
     _type: AppendTables
@@ -372,11 +372,11 @@ nodes:
         max_frequency: 30.0
   eegheadsetdetection0:
     _type: EEGHeadsetDetection
-    category: analysis
+    category: signal
     gui_kwargs:
       pos:
-      - 316
-      - 1563
+      - 270
+      - 1583
       viewers:
         headset_status:
           collapsed: false
