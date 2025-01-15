@@ -59,10 +59,6 @@ links:
   node_out: join1
   slot_in: new_data
   slot_out: out
-- node_in: welfordsztransform1
-  node_out: lempelziv0
-  slot_in: data
-  slot_out: lzc
 - node_in: join1
   node_out: loadfile0
   slot_in: a
@@ -78,10 +74,6 @@ links:
 - node_in: eegheadsetdetection0
   node_out: lslclient0
   slot_in: eeg_data
-  slot_out: out
-- node_in: welfordsztransform0
-  node_out: operation2
-  slot_in: data
   slot_out: out
 - node_in: tableselectstring0
   node_out: oscin0
@@ -155,14 +147,6 @@ links:
   node_out: transpose1
   slot_in: data
   slot_out: out
-- node_in: join0
-  node_out: welfordsztransform0
-  slot_in: a
-  slot_out: normalized
-- node_in: join0
-  node_out: welfordsztransform1
-  slot_in: b
-  slot_out: normalized
 nodes:
   appendtables2:
     _type: AppendTables
@@ -1071,51 +1055,3 @@ nodes:
         mirror: true
         screen_index: 1
         screen_region: full
-  welfordsztransform0:
-    _type: WelfordsZTransform
-    category: signal
-    gui_kwargs:
-      pos:
-      - 1541
-      - 1435
-      viewers:
-        normalized:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-      welford:
-        biased_std: false
-        outlier_stds: 4.0
-        reset: false
-        window_size: 320
-  welfordsztransform1:
-    _type: WelfordsZTransform
-    category: signal
-    gui_kwargs:
-      pos:
-      - 1541
-      - 1646
-      viewers:
-        normalized:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-      welford:
-        biased_std: false
-        outlier_stds: 4.0
-        reset: false
-        window_size: 320
