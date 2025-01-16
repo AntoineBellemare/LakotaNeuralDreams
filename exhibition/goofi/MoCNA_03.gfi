@@ -15,6 +15,10 @@ links:
   node_out: buffer1
   slot_in: data
   slot_out: out
+- node_in: operation0
+  node_out: buffer2
+  slot_in: b
+  slot_out: out
 - node_in: buffer1
   node_out: compass0
   slot_in: val
@@ -31,20 +35,28 @@ links:
   node_out: constantarray2
   slot_in: pole1
   slot_out: out
-- node_in: embedding1
+- node_in: embedding0
   node_out: constantstring0
   slot_in: text
+  slot_out: out
+- node_in: promptbook0
+  node_out: constantstring0
+  slot_in: input_prompt
   slot_out: out
 - node_in: transpose1
   node_out: dimensionalityreduction0
   slot_in: array
   slot_out: new_components
+- node_in: reshape2
+  node_out: eegembedding0
+  slot_in: array
+  slot_out: embeddings
 - node_in: switch0
-  node_out: embedding1
+  node_out: embedding0
   slot_in: array1
   slot_out: text_embeddings
 - node_in: switch0
-  node_out: embedding1
+  node_out: embedding0
   slot_in: array2
   slot_out: data_embeddings
 - node_in: appendtables2
@@ -55,8 +67,12 @@ links:
   node_out: join0
   slot_in: array
   slot_out: out
-- node_in: dimensionalityreduction0
+- node_in: join2
   node_out: join1
+  slot_in: a
+  slot_out: out
+- node_in: dimensionalityreduction0
+  node_out: join2
   slot_in: new_data
   slot_out: out
 - node_in: join1
@@ -75,10 +91,14 @@ links:
   node_out: lslclient0
   slot_in: eeg_data
   slot_out: out
-- node_in: tableselectstring0
-  node_out: oscin0
-  slot_in: input_table
-  slot_out: message
+- node_in: resample0
+  node_out: lslclient0
+  slot_in: data
+  slot_out: out
+- node_in: eegembedding0
+  node_out: operation0
+  slot_in: eeg
+  slot_out: out
 - node_in: operation2
   node_out: powerbandeeg0
   slot_in: a
@@ -91,8 +111,16 @@ links:
   node_out: psd0
   slot_in: data
   slot_out: psd
+- node_in: operation0
+  node_out: randomarray0
+  slot_in: a
+  slot_out: random_array
 - node_in: buffer0
   node_out: reduce2
+  slot_in: val
+  slot_out: out
+- node_in: buffer2
+  node_out: resample0
   slot_in: val
   slot_out: out
 - node_in: join1
@@ -102,6 +130,14 @@ links:
 - node_in: compass0
   node_out: reshape1
   slot_in: pole2
+  slot_out: out
+- node_in: join2
+  node_out: reshape2
+  slot_in: b
+  slot_out: out
+- node_in: extendedtable1
+  node_out: select0
+  slot_in: array_input5
   slot_out: out
 - node_in: extendedtable1
   node_out: select4
@@ -139,6 +175,10 @@ links:
   node_out: table0
   slot_in: data
   slot_out: table
+- node_in: extendedtable1
+  node_out: textgeneration0
+  slot_in: string_input1
+  slot_out: generated_text
 - node_in: select7
   node_out: transpose1
   slot_in: data
@@ -147,6 +187,14 @@ links:
   node_out: transpose1
   slot_in: data
   slot_out: out
+- node_in: select0
+  node_out: transpose1
+  slot_in: data
+  slot_out: out
+- node_in: embedding0
+  node_out: videostream0
+  slot_in: data
+  slot_out: frame
 nodes:
   appendtables2:
     _type: AppendTables
@@ -158,11 +206,11 @@ nodes:
       viewers:
         output_table:
           collapsed: false
-          height: 130
+          height: 200
           log_scale_x: false
           log_scale_y: false
           viewer_idx: 0
-          width: 205
+          width: 275
     params:
       common:
         autotrigger: false
@@ -172,8 +220,8 @@ nodes:
     category: signal
     gui_kwargs:
       pos:
-      - 629
-      - 1314
+      - 599
+      - 1510
       viewers:
         out:
           collapsed: false
@@ -213,6 +261,29 @@ nodes:
       common:
         autotrigger: false
         max_frequency: 30.0
+  buffer2:
+    _type: Buffer
+    category: signal
+    gui_kwargs:
+      pos:
+      - 378
+      - 1122
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      buffer:
+        axis: -1
+        reset: false
+        size: 440
+      common:
+        autotrigger: false
+        max_frequency: 30.0
   compass0:
     _type: Compass
     category: analysis
@@ -237,8 +308,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -309
-      - 927
+      - -406
+      - 973
       viewers:
         out:
           collapsed: false
@@ -260,8 +331,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -16
-      - 1548
+      - -46
+      - 1744
       viewers:
         out:
           collapsed: false
@@ -319,16 +390,16 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 30.0
+        max_frequency: 1.0
       constant:
-        value: I was dreaming of a land of fire, inside a shell made of ice
+        value: I saw a valley with animals that were dancing
   dimensionalityreduction0:
     _type: DimensionalityReduction
     category: analysis
     gui_kwargs:
       pos:
-      - 791
-      - 737
+      - 930
+      - 548
       viewers:
         new_components:
           collapsed: false
@@ -346,21 +417,42 @@ nodes:
           width: 175
     params:
       Control:
-        method: UMAP
+        method: PCA
         n_components: 3
         reset: true
-        tsne_perplexity: 30.0
+        tsne_perplexity: 6.0
         umap_neighbors: 7.0
       common:
         autotrigger: false
         max_frequency: 30.0
+  eegembedding0:
+    _type: EEGEmbedding
+    category: analysis
+    gui_kwargs:
+      pos:
+      - 801
+      - 1195
+      viewers:
+        embeddings:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      embedding:
+        device: auto
   eegheadsetdetection0:
     _type: EEGHeadsetDetection
     category: signal
     gui_kwargs:
       pos:
-      - 270
-      - 1583
+      - 240
+      - 1779
       viewers:
         headset_status:
           collapsed: false
@@ -380,8 +472,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 196
-      - 1234
+      - 166
+      - 1430
       viewers: {}
     params:
       common:
@@ -393,13 +485,13 @@ nodes:
         source_name: goofi
         stream_name: recording
         use_example_data: true
-  embedding1:
+  embedding0:
     _type: Embedding
     category: analysis
     gui_kwargs:
       pos:
-      - -42
-      - 739
+      - -86
+      - 776
       viewers:
         data_embeddings:
           collapsed: false
@@ -421,6 +513,7 @@ nodes:
         max_frequency: 30.0
       embedding:
         model: openai/clip-vit-base-patch32
+        processing: cpu
         split_by_comma: false
   extendedtable1:
     _type: ExtendedTable
@@ -447,8 +540,8 @@ nodes:
         param2: ys_txt
         param3: zs_txt
         param4: rt_coord
-        param5: value5
-        param6: value6
+        param5: rt_coord_brain
+        param6: txt_prompt
         param7: value7
         param8: value8
         param9: value9
@@ -496,6 +589,28 @@ nodes:
       join:
         axis: 0
         method: concatenate
+  join2:
+    _type: Join
+    category: array
+    gui_kwargs:
+      pos:
+      - 785
+      - 946
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 5.0
+      join:
+        axis: 0
+        method: concatenate
   lempelziv0:
     _type: LempelZiv
     category: analysis
@@ -523,8 +638,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -33
-      - 432
+      - 173
+      - 438
       viewers:
         data_output:
           collapsed: false
@@ -557,8 +672,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 194
-      - 1304
+      - 164
+      - 1500
       viewers:
         out:
           collapsed: false
@@ -575,6 +690,27 @@ nodes:
         refresh: false
         source_name: goofi
         stream_name: ''
+  operation0:
+    _type: Operation
+    category: array
+    gui_kwargs:
+      pos:
+      - 594
+      - 1193
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      operation:
+        operation: matmul
   operation2:
     _type: Operation
     category: array
@@ -623,8 +759,8 @@ nodes:
     category: outputs
     gui_kwargs:
       pos:
-      - 2162
-      - 755
+      - 2197
+      - 738
       viewers: {}
     params:
       common:
@@ -641,8 +777,8 @@ nodes:
     category: outputs
     gui_kwargs:
       pos:
-      - 755
-      - 1659
+      - 725
+      - 1855
       viewers: {}
     params:
       common:
@@ -659,8 +795,8 @@ nodes:
     category: analysis
     gui_kwargs:
       pos:
-      - 1057
-      - 1324
+      - 1025
+      - 1513
       viewers:
         alpha:
           collapsed: false
@@ -710,13 +846,34 @@ nodes:
         max_frequency: 30.0
       powerband:
         power_type: absolute
+  promptbook0:
+    _type: PromptBook
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 470
+      - 230
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      Text_Generation:
+        selected_prompt: TXT2IMG_DREAM_PROMPT
+      common:
+        autotrigger: false
+        max_frequency: 30.0
   psd0:
     _type: PSD
     category: signal
     gui_kwargs:
       pos:
-      - 844
-      - 1319
+      - 814
+      - 1515
       viewers:
         psd:
           collapsed: false
@@ -736,13 +893,37 @@ nodes:
         noverlap: 0
         precision: 0.1
         smooth_welch: 1
+  randomarray0:
+    _type: RandomArray
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 379
+      - 1316
+      viewers:
+        random_array:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      random:
+        dimensions: 128, 64
+        distribution: normal
+        normalize_eigenvalue: false
+        reset: true
   reduce2:
     _type: Reduce
     category: array
     gui_kwargs:
       pos:
-      - 410
-      - 1308
+      - 380
+      - 1504
       viewers:
         out:
           collapsed: false
@@ -758,6 +939,28 @@ nodes:
       reduce:
         axis: 0
         method: mean
+  resample0:
+    _type: Resample
+    category: signal
+    gui_kwargs:
+      pos:
+      - 173
+      - 1246
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      resample:
+        axis: -1
+        new_sfreq: 1000
   reshape0:
     _type: Reshape
     category: array
@@ -800,6 +1003,50 @@ nodes:
         max_frequency: 30.0
       reshape:
         shape: '-1'
+  reshape2:
+    _type: Reshape
+    category: array
+    gui_kwargs:
+      pos:
+      - 1009
+      - 1198
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      reshape:
+        shape: 1, 512
+  select0:
+    _type: Select
+    category: array
+    gui_kwargs:
+      pos:
+      - 1611
+      - 1302
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      select:
+        axis: 1
+        exclude: ''
+        include: '-1'
   select4:
     _type: Select
     category: array
@@ -874,8 +1121,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1193
-      - 1121
+      - 1220
+      - 1116
       viewers:
         out:
           collapsed: false
@@ -891,14 +1138,14 @@ nodes:
       select:
         axis: 1
         exclude: ''
-        include: '-1'
+        include: '-2'
   select8:
     _type: Select
     category: array
     gui_kwargs:
       pos:
-      - 1210
-      - 733
+      - 1194
+      - 726
       viewers:
         out:
           collapsed: false
@@ -914,7 +1161,7 @@ nodes:
       select:
         axis: 1
         exclude: ''
-        include: :-1
+        include: :-2
   smooth0:
     _type: Smooth
     category: signal
@@ -970,8 +1217,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 525
-      - 1568
+      - 495
+      - 1764
       viewers:
         table:
           collapsed: false
@@ -1007,13 +1254,40 @@ nodes:
         max_frequency: 30.0
       selection:
         key: /text_input
+  textgeneration0:
+    _type: TextGeneration
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 679
+      - 230
+      viewers:
+        generated_text:
+          collapsed: false
+          height: 160
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 235
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 0.3
+      text_generation:
+        api_key: openai.key
+        keep_conversation: false
+        max_tokens: 100
+        model: gpt-4o-mini
+        save_conversation: ''
+        system_prompt: ''
+        temperature: 1.0
   transpose1:
     _type: Transpose
     category: array
     gui_kwargs:
       pos:
-      - 1004
-      - 735
+      - 1119
+      - 923
       viewers:
         out:
           collapsed: false
@@ -1031,8 +1305,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -310
-      - 732
+      - -406
+      - 771
       viewers:
         frame:
           collapsed: false
