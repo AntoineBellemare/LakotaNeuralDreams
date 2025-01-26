@@ -55,9 +55,17 @@ links:
   node_out: embedding0
   slot_in: array1
   slot_out: text_embeddings
+- node_in: operation1
+  node_out: embedding0
+  slot_in: a
+  slot_out: text_embeddings
 - node_in: switch0
   node_out: embedding0
   slot_in: array2
+  slot_out: data_embeddings
+- node_in: operation1
+  node_out: embedding0
+  slot_in: b
   slot_out: data_embeddings
 - node_in: appendtables2
   node_out: extendedtable1
@@ -75,6 +83,10 @@ links:
   node_out: join2
   slot_in: new_data
   slot_out: out
+- node_in: welfordsztransform1
+  node_out: lempelziv0
+  slot_in: data
+  slot_out: lzc
 - node_in: join1
   node_out: loadfile0
   slot_in: a
@@ -82,6 +94,10 @@ links:
 - node_in: dimensionalityreduction0
   node_out: loadfile0
   slot_in: data
+  slot_out: data_output
+- node_in: operation3
+  node_out: loadfile0
+  slot_in: a
   slot_out: data_output
 - node_in: reduce2
   node_out: lslclient0
@@ -98,6 +114,18 @@ links:
 - node_in: eegembedding0
   node_out: operation0
   slot_in: eeg
+  slot_out: out
+- node_in: operation3
+  node_out: operation1
+  slot_in: b
+  slot_out: out
+- node_in: welfordsztransform0
+  node_out: operation2
+  slot_in: data
+  slot_out: out
+- node_in: reshape3
+  node_out: operation3
+  slot_in: array
   slot_out: out
 - node_in: operation2
   node_out: powerbandeeg0
@@ -195,22 +223,38 @@ links:
   node_out: videostream0
   slot_in: data
   slot_out: frame
+- node_in: join0
+  node_out: welfordsztransform0
+  slot_in: a
+  slot_out: normalized
+- node_in: join0
+  node_out: welfordsztransform1
+  slot_in: b
+  slot_out: normalized
+- node_in: appendtables2
+  node_out: extendedtable0
+  slot_in: table1
+  slot_out: table
+- node_in: extendedtable0
+  node_out: reshape3
+  slot_in: array_input1
+  slot_out: out
 nodes:
   appendtables2:
     _type: AppendTables
     category: misc
     gui_kwargs:
       pos:
-      - 1852
-      - 640
+      - 2127
+      - 885
       viewers:
         output_table:
           collapsed: false
-          height: 200
+          height: 120
           log_scale_x: false
           log_scale_y: false
           viewer_idx: 0
-          width: 275
+          width: 195
     params:
       common:
         autotrigger: false
@@ -220,8 +264,8 @@ nodes:
     category: signal
     gui_kwargs:
       pos:
-      - 599
-      - 1510
+      - 614
+      - 1880
       viewers:
         out:
           collapsed: false
@@ -266,8 +310,8 @@ nodes:
     category: signal
     gui_kwargs:
       pos:
-      - 378
-      - 1122
+      - 393
+      - 1492
       viewers:
         out:
           collapsed: false
@@ -308,8 +352,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -406
-      - 973
+      - -484
+      - 924
       viewers:
         out:
           collapsed: false
@@ -377,8 +421,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -313
-      - 443
+      - -186
+      - 583
       viewers:
         out:
           collapsed: false
@@ -392,7 +436,7 @@ nodes:
         autotrigger: true
         max_frequency: 1.0
       constant:
-        value: I saw a valley with animals that were dancing
+        value: I was travelling with my medecine and a bag with me
   dimensionalityreduction0:
     _type: DimensionalityReduction
     category: analysis
@@ -430,8 +474,8 @@ nodes:
     category: analysis
     gui_kwargs:
       pos:
-      - 801
-      - 1195
+      - 816
+      - 1565
       viewers:
         embeddings:
           collapsed: false
@@ -451,8 +495,8 @@ nodes:
     category: signal
     gui_kwargs:
       pos:
-      - 240
-      - 1779
+      - 255
+      - 2149
       viewers:
         headset_status:
           collapsed: false
@@ -472,8 +516,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 166
-      - 1430
+      - 43
+      - 1499
       viewers: {}
     params:
       common:
@@ -490,8 +534,8 @@ nodes:
     category: analysis
     gui_kwargs:
       pos:
-      - -86
-      - 776
+      - -182
+      - 774
       viewers:
         data_embeddings:
           collapsed: false
@@ -515,13 +559,43 @@ nodes:
         model: openai/clip-vit-base-patch32
         processing: cpu
         split_by_comma: false
+  extendedtable0:
+    _type: ExtendedTable
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 1893
+      - 728
+      viewers:
+        table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      table:
+        param1: ranking
+        param10: value10
+        param2: value2
+        param3: value3
+        param4: value4
+        param5: value5
+        param6: value6
+        param7: value7
+        param8: value8
+        param9: value9
   extendedtable1:
     _type: ExtendedTable
     category: inputs
     gui_kwargs:
       pos:
-      - 1637
-      - 727
+      - 1669
+      - 730
       viewers:
         table:
           collapsed: false
@@ -616,8 +690,8 @@ nodes:
     category: analysis
     gui_kwargs:
       pos:
-      - 1294
-      - 1653
+      - 1334
+      - 1768
       viewers:
         lzc:
           collapsed: false
@@ -638,8 +712,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 173
-      - 438
+      - 171
+      - 435
       viewers:
         data_output:
           collapsed: false
@@ -672,8 +746,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 164
-      - 1500
+      - 179
+      - 1870
       viewers:
         out:
           collapsed: false
@@ -695,8 +769,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 594
-      - 1193
+      - 609
+      - 1563
       viewers:
         out:
           collapsed: false
@@ -711,13 +785,34 @@ nodes:
         max_frequency: 30.0
       operation:
         operation: matmul
+  operation1:
+    _type: Operation
+    category: array
+    gui_kwargs:
+      pos:
+      - -183
+      - 1128
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      operation:
+        operation: max
   operation2:
     _type: Operation
     category: array
     gui_kwargs:
       pos:
-      - 1294
-      - 1417
+      - 1336
+      - 1519
       viewers:
         out:
           collapsed: false
@@ -732,6 +827,27 @@ nodes:
         max_frequency: 30.0
       operation:
         operation: divide
+  operation3:
+    _type: Operation
+    category: array
+    gui_kwargs:
+      pos:
+      - 790
+      - 1225
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      operation:
+        operation: cosine_similarity
   oscin0:
     _type: OSCIn
     category: inputs
@@ -759,8 +875,8 @@ nodes:
     category: outputs
     gui_kwargs:
       pos:
-      - 2197
-      - 738
+      - 2390
+      - 977
       viewers: {}
     params:
       common:
@@ -777,8 +893,8 @@ nodes:
     category: outputs
     gui_kwargs:
       pos:
-      - 725
-      - 1855
+      - 740
+      - 2225
       viewers: {}
     params:
       common:
@@ -795,8 +911,8 @@ nodes:
     category: analysis
     gui_kwargs:
       pos:
-      - 1025
-      - 1513
+      - 1040
+      - 1883
       viewers:
         alpha:
           collapsed: false
@@ -872,8 +988,8 @@ nodes:
     category: signal
     gui_kwargs:
       pos:
-      - 814
-      - 1515
+      - 829
+      - 1885
       viewers:
         psd:
           collapsed: false
@@ -898,8 +1014,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 379
-      - 1316
+      - 394
+      - 1686
       viewers:
         random_array:
           collapsed: false
@@ -922,8 +1038,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 380
-      - 1504
+      - 395
+      - 1874
       viewers:
         out:
           collapsed: false
@@ -944,8 +1060,8 @@ nodes:
     category: signal
     gui_kwargs:
       pos:
-      - 173
-      - 1246
+      - 188
+      - 1616
       viewers:
         out:
           collapsed: false
@@ -1008,8 +1124,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1009
-      - 1198
+      - 1024
+      - 1568
       viewers:
         out:
           collapsed: false
@@ -1024,6 +1140,27 @@ nodes:
         max_frequency: 30.0
       reshape:
         shape: 1, 512
+  reshape3:
+    _type: Reshape
+    category: array
+    gui_kwargs:
+      pos:
+      - 1015
+      - 1253
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      reshape:
+        shape: '-1'
   select0:
     _type: Select
     category: array
@@ -1217,8 +1354,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 495
-      - 1764
+      - 510
+      - 2134
       viewers:
         table:
           collapsed: false
@@ -1305,8 +1442,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -406
-      - 771
+      - -485
+      - 752
       viewers:
         frame:
           collapsed: false
@@ -1329,3 +1466,49 @@ nodes:
         mirror: true
         screen_index: 1
         screen_region: full
+  welfordsztransform0:
+    _type: WelfordsZTransform
+    category: signal
+    gui_kwargs:
+      pos:
+      - 1547
+      - 1520
+      viewers:
+        normalized:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      welford:
+        biased_std: false
+        outlier_stds: 4.0
+        reset: false
+  welfordsztransform1:
+    _type: WelfordsZTransform
+    category: signal
+    gui_kwargs:
+      pos:
+      - 1568
+      - 1803
+      viewers:
+        normalized:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      welford:
+        biased_std: false
+        outlier_stds: 4.0
+        reset: false
