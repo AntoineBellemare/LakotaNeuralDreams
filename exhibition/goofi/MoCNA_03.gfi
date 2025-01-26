@@ -11,14 +11,6 @@ links:
   node_out: buffer0
   slot_in: data
   slot_out: out
-- node_in: smooth0
-  node_out: buffer1
-  slot_in: data
-  slot_out: out
-- node_in: extendedtable0
-  node_out: buffer1
-  slot_in: array_input2
-  slot_out: out
 - node_in: operation0
   node_out: buffer2
   slot_in: b
@@ -26,6 +18,10 @@ links:
 - node_in: buffer1
   node_out: compass0
   slot_in: val
+  slot_out: angles
+- node_in: extendedtable0
+  node_out: compass0
+  slot_in: array_input2
   slot_out: angles
 - node_in: switch0
   node_out: constantarray0
@@ -43,13 +39,9 @@ links:
   node_out: constantarray3
   slot_in: b
   slot_out: out
-- node_in: embedding0
-  node_out: constantstring0
-  slot_in: text
-  slot_out: out
-- node_in: textgeneration1
-  node_out: constantstring1
-  slot_in: prompt
+- node_in: joinstring1
+  node_out: constantstring2
+  slot_in: string1
   slot_out: out
 - node_in: transpose1
   node_out: dimensionalityreduction0
@@ -66,6 +58,10 @@ links:
 - node_in: operation1
   node_out: embedding0
   slot_in: a
+  slot_out: text_embeddings
+- node_in: vectordb1
+  node_out: embedding0
+  slot_in: input_vector
   slot_out: text_embeddings
 - node_in: operation5
   node_out: embedding0
@@ -102,6 +98,10 @@ links:
 - node_in: promptbook0
   node_out: joinstring0
   slot_in: input_prompt
+  slot_out: output
+- node_in: extendedtable1
+  node_out: joinstring1
+  slot_in: string_input2
   slot_out: output
 - node_in: welfordsztransform1
   node_out: lempelziv0
@@ -151,6 +151,10 @@ links:
   node_out: operation5
   slot_in: b
   slot_out: out
+- node_in: tableselectstring0
+  node_out: oscin0
+  slot_in: input_table
+  slot_out: message
 - node_in: operation2
   node_out: powerbandeeg0
   slot_in: a
@@ -255,17 +259,25 @@ links:
   node_out: table0
   slot_in: data
   slot_out: table
+- node_in: embedding0
+  node_out: tableselectstring0
+  slot_in: text
+  slot_out: output_string
+- node_in: joinstring0
+  node_out: tableselectstring0
+  slot_in: string1
+  slot_out: output_string
 - node_in: joinstring0
   node_out: tabletostring0
+  slot_in: string2
+  slot_out: text
+- node_in: joinstring1
+  node_out: tabletostring1
   slot_in: string2
   slot_out: text
 - node_in: extendedtable1
   node_out: textgeneration0
   slot_in: string_input1
-  slot_out: generated_text
-- node_in: joinstring0
-  node_out: textgeneration1
-  slot_in: string1
   slot_out: generated_text
 - node_in: select7
   node_out: transpose1
@@ -283,6 +295,10 @@ links:
   node_out: vectordb0
   slot_in: table
   slot_out: top_labels
+- node_in: tabletostring1
+  node_out: vectordb1
+  slot_in: table
+  slot_out: top_labels
 - node_in: embedding0
   node_out: videostream0
   slot_in: data
@@ -291,9 +307,17 @@ links:
   node_out: welfordsztransform0
   slot_in: a
   slot_out: normalized
+- node_in: extendedtable0
+  node_out: welfordsztransform0
+  slot_in: array_input4
+  slot_out: normalized
 - node_in: join0
   node_out: welfordsztransform1
   slot_in: b
+  slot_out: normalized
+- node_in: extendedtable0
+  node_out: welfordsztransform1
+  slot_in: array_input5
   slot_out: normalized
 nodes:
   appendtables2:
@@ -431,8 +455,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -46
-      - 1744
+      - 269
+      - 2352
       viewers:
         out:
           collapsed: false
@@ -500,8 +524,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -631
-      - 516
+      - -846
+      - 312
       viewers:
         out:
           collapsed: false
@@ -521,8 +545,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -1025
-      - 144
+      - -1093
+      - 126
       viewers:
         out:
           collapsed: false
@@ -537,6 +561,28 @@ nodes:
         max_frequency: 30.0
       constant:
         value: Respond with a description of a surreal dream in one sentence.
+  constantstring2:
+    _type: ConstantString
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -182
+      - -416
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      constant:
+        value: a lakota traditional symbol, with intricatred colorful design, on a
+          black backghround, made of the following elements
   dimensionalityreduction0:
     _type: DimensionalityReduction
     category: analysis
@@ -683,8 +729,8 @@ nodes:
         param10: value10
         param2: compass
         param3: distance
-        param4: value4
-        param5: value5
+        param4: hypnagogia
+        param5: complexity
         param6: value6
         param7: value7
         param8: value8
@@ -716,7 +762,7 @@ nodes:
         param4: rt_coord
         param5: rt_coord_brain
         param6: txt_prompt
-        param7: value7
+        param7: lakota_prompt
         param8: value8
         param9: value9
   join0:
@@ -792,6 +838,32 @@ nodes:
       pos:
       - 125
       - 122
+      viewers:
+        output:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      join:
+        separator: ', '
+        string1: true
+        string2: true
+        string3: true
+        string4: true
+        string5: true
+  joinstring1:
+    _type: JoinString
+    category: misc
+    gui_kwargs:
+      pos:
+      - 121
+      - -193
       viewers:
         output:
           collapsed: false
@@ -906,8 +978,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 179
-      - 1870
+      - -60
+      - 1850
       viewers:
         out:
           collapsed: false
@@ -919,7 +991,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 10.0
+        max_frequency: 5.0
       lsl_stream:
         refresh: false
         source_name: goofi
@@ -1544,28 +1616,6 @@ nodes:
         axis: 1
         exclude: ''
         include: :-2
-  smooth0:
-    _type: Smooth
-    category: signal
-    gui_kwargs:
-      pos:
-      - 2636
-      - 1546
-      viewers:
-        out:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-      smooth:
-        axis: -1
-        sigma: 5.0
   switch0:
     _type: Switch
     category: misc
@@ -1658,13 +1708,35 @@ nodes:
       table_to_string:
         add_backslashes: true
         format: json
+  tabletostring1:
+    _type: TableToString
+    category: misc
+    gui_kwargs:
+      pos:
+      - -183
+      - -218
+      viewers:
+        text:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      table_to_string:
+        add_backslashes: true
+        format: json
   textgeneration0:
     _type: TextGeneration
     category: inputs
     gui_kwargs:
       pos:
-      - 591
-      - 103
+      - 603
+      - 133
       viewers:
         generated_text:
           collapsed: false
@@ -1676,7 +1748,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 0.3
+        max_frequency: 0.1
       text_generation:
         api_key: openai.key
         keep_conversation: false
@@ -1690,8 +1762,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -804
-      - 131
+      - -872
+      - 113
       viewers:
         generated_text:
           collapsed: false
@@ -1760,6 +1832,35 @@ nodes:
       common:
         autotrigger: false
         max_frequency: 30.0
+  vectordb1:
+    _type: VectorDB
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -397
+      - -249
+      viewers:
+        top_labels:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        vectors:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      Control:
+        database_path: index_500words_clip-vit-base-patch32.pkl
+        top_n: 5
+      common:
+        autotrigger: false
+        max_frequency: 30.0
   videostream0:
     _type: VideoStream
     category: inputs
@@ -1811,14 +1912,14 @@ nodes:
       welford:
         biased_std: false
         outlier_stds: 4.0
-        reset: false
+        reset: true
   welfordsztransform1:
     _type: WelfordsZTransform
     category: signal
     gui_kwargs:
       pos:
-      - 1568
-      - 1803
+      - 1542
+      - 1776
       viewers:
         normalized:
           collapsed: false
@@ -1834,4 +1935,4 @@ nodes:
       welford:
         biased_std: false
         outlier_stds: 4.0
-        reset: false
+        reset: true
