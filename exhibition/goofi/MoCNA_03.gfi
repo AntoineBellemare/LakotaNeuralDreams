@@ -39,9 +39,9 @@ links:
   node_out: constantstring0
   slot_in: text
   slot_out: out
-- node_in: promptbook0
+- node_in: joinstring0
   node_out: constantstring0
-  slot_in: input_prompt
+  slot_in: string1
   slot_out: out
 - node_in: transpose1
   node_out: dimensionalityreduction0
@@ -67,6 +67,14 @@ links:
   node_out: embedding0
   slot_in: b
   slot_out: data_embeddings
+- node_in: vectordb0
+  node_out: embedding0
+  slot_in: input_vector
+  slot_out: data_embeddings
+- node_in: appendtables2
+  node_out: extendedtable0
+  slot_in: table1
+  slot_out: table
 - node_in: appendtables2
   node_out: extendedtable1
   slot_in: table2
@@ -163,6 +171,10 @@ links:
   node_out: reshape2
   slot_in: b
   slot_out: out
+- node_in: extendedtable0
+  node_out: reshape3
+  slot_in: array_input1
+  slot_out: out
 - node_in: extendedtable1
   node_out: select0
   slot_in: array_input5
@@ -231,14 +243,18 @@ links:
   node_out: welfordsztransform1
   slot_in: b
   slot_out: normalized
-- node_in: appendtables2
-  node_out: extendedtable0
-  slot_in: table1
-  slot_out: table
-- node_in: extendedtable0
-  node_out: reshape3
-  slot_in: array_input1
-  slot_out: out
+- node_in: tabletostring0
+  node_out: vectordb0
+  slot_in: table
+  slot_out: top_labels
+- node_in: joinstring0
+  node_out: tabletostring0
+  slot_in: string2
+  slot_out: text
+- node_in: promptbook0
+  node_out: joinstring0
+  slot_in: input_prompt
+  slot_out: output
 nodes:
   appendtables2:
     _type: AppendTables
@@ -421,8 +437,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -186
-      - 583
+      - -167
+      - 473
       viewers:
         out:
           collapsed: false
@@ -685,6 +701,32 @@ nodes:
       join:
         axis: 0
         method: concatenate
+  joinstring0:
+    _type: JoinString
+    category: misc
+    gui_kwargs:
+      pos:
+      - 85
+      - 137
+      viewers:
+        output:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      join:
+        separator: ', '
+        string1: true
+        string2: true
+        string3: true
+        string4: true
+        string5: true
   lempelziv0:
     _type: LempelZiv
     category: analysis
@@ -853,8 +895,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -539
-      - 231
+      - -619
+      - 463
       viewers:
         message:
           collapsed: false
@@ -1375,8 +1417,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - -318
-      - 234
+      - -415
+      - 457
       viewers:
         output_string:
           collapsed: false
@@ -1391,6 +1433,28 @@ nodes:
         max_frequency: 30.0
       selection:
         key: /text_input
+  tabletostring0:
+    _type: TableToString
+    category: misc
+    gui_kwargs:
+      pos:
+      - -182
+      - 101
+      viewers:
+        text:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      table_to_string:
+        add_backslashes: true
+        format: json
   textgeneration0:
     _type: TextGeneration
     category: inputs
@@ -1437,13 +1501,42 @@ nodes:
       common:
         autotrigger: false
         max_frequency: 30.0
+  vectordb0:
+    _type: VectorDB
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -403
+      - 101
+      viewers:
+        top_labels:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        vectors:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      Control:
+        database_path: index_500words_clip-vit-base-patch32.pkl
+        top_n: 12
+      common:
+        autotrigger: false
+        max_frequency: 30.0
   videostream0:
     _type: VideoStream
     category: inputs
     gui_kwargs:
       pos:
-      - -485
-      - 752
+      - -415
+      - 724
       viewers:
         frame:
           collapsed: false
