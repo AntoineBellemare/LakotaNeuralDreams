@@ -47,6 +47,10 @@ links:
   node_out: constantstring0
   slot_in: text
   slot_out: out
+- node_in: textgeneration1
+  node_out: constantstring1
+  slot_in: prompt
+  slot_out: out
 - node_in: transpose1
   node_out: dimensionalityreduction0
   slot_in: array
@@ -155,6 +159,10 @@ links:
   node_out: powerbandeeg0
   slot_in: b
   slot_out: alpha
+- node_in: textgeneration0
+  node_out: promptbook0
+  slot_in: prompt
+  slot_out: out
 - node_in: powerbandeeg0
   node_out: psd0
   slot_in: data
@@ -254,6 +262,10 @@ links:
 - node_in: extendedtable1
   node_out: textgeneration0
   slot_in: string_input1
+  slot_out: generated_text
+- node_in: joinstring0
+  node_out: textgeneration1
+  slot_in: string1
   slot_out: generated_text
 - node_in: select7
   node_out: transpose1
@@ -504,6 +516,27 @@ nodes:
         max_frequency: 30.0
       constant:
         value: I was in motion towards the west, looking for abundance and wealth
+  constantstring1:
+    _type: ConstantString
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -1025
+      - 144
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      constant:
+        value: Respond with a description of a surreal dream in one sentence.
   dimensionalityreduction0:
     _type: DimensionalityReduction
     category: analysis
@@ -1652,6 +1685,33 @@ nodes:
         save_conversation: ''
         system_prompt: ''
         temperature: 1.0
+  textgeneration1:
+    _type: TextGeneration
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -804
+      - 131
+      viewers:
+        generated_text:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 0.1
+      text_generation:
+        api_key: openai.key
+        keep_conversation: false
+        max_tokens: 20
+        model: gpt-4o-mini
+        save_conversation: ''
+        system_prompt: ''
+        temperature: 1.3
   transpose1:
     _type: Transpose
     category: array
