@@ -15,6 +15,10 @@ links:
   node_out: buffer1
   slot_in: data
   slot_out: out
+- node_in: extendedtable0
+  node_out: buffer1
+  slot_in: array_input2
+  slot_out: out
 - node_in: operation0
   node_out: buffer2
   slot_in: b
@@ -59,6 +63,10 @@ links:
   node_out: embedding0
   slot_in: a
   slot_out: text_embeddings
+- node_in: operation3
+  node_out: embedding0
+  slot_in: b
+  slot_out: text_embeddings
 - node_in: switch0
   node_out: embedding0
   slot_in: array2
@@ -91,6 +99,10 @@ links:
   node_out: join2
   slot_in: new_data
   slot_out: out
+- node_in: promptbook0
+  node_out: joinstring0
+  slot_in: input_prompt
+  slot_out: output
 - node_in: welfordsztransform1
   node_out: lempelziv0
   slot_in: data
@@ -99,13 +111,13 @@ links:
   node_out: loadfile0
   slot_in: a
   slot_out: data_output
-- node_in: dimensionalityreduction0
-  node_out: loadfile0
-  slot_in: data
-  slot_out: data_output
 - node_in: operation3
   node_out: loadfile0
   slot_in: a
+  slot_out: data_output
+- node_in: dimensionalityreduction0
+  node_out: loadfile1
+  slot_in: data
   slot_out: data_output
 - node_in: reduce2
   node_out: lslclient0
@@ -122,10 +134,6 @@ links:
 - node_in: eegembedding0
   node_out: operation0
   slot_in: eeg
-  slot_out: out
-- node_in: operation3
-  node_out: operation1
-  slot_in: b
   slot_out: out
 - node_in: welfordsztransform0
   node_out: operation2
@@ -215,6 +223,10 @@ links:
   node_out: table0
   slot_in: data
   slot_out: table
+- node_in: joinstring0
+  node_out: tabletostring0
+  slot_in: string2
+  slot_out: text
 - node_in: extendedtable1
   node_out: textgeneration0
   slot_in: string_input1
@@ -231,6 +243,10 @@ links:
   node_out: transpose1
   slot_in: data
   slot_out: out
+- node_in: tabletostring0
+  node_out: vectordb0
+  slot_in: table
+  slot_out: top_labels
 - node_in: embedding0
   node_out: videostream0
   slot_in: data
@@ -243,18 +259,6 @@ links:
   node_out: welfordsztransform1
   slot_in: b
   slot_out: normalized
-- node_in: tabletostring0
-  node_out: vectordb0
-  slot_in: table
-  slot_out: top_labels
-- node_in: joinstring0
-  node_out: tabletostring0
-  slot_in: string2
-  slot_out: text
-- node_in: promptbook0
-  node_out: joinstring0
-  slot_in: input_prompt
-  slot_out: output
 nodes:
   appendtables2:
     _type: AppendTables
@@ -437,8 +441,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -167
-      - 473
+      - -190
+      - 471
       viewers:
         out:
           collapsed: false
@@ -452,7 +456,8 @@ nodes:
         autotrigger: true
         max_frequency: 1.0
       constant:
-        value: I was travelling with my medecine and a bag with me
+        value: '"star", "medicine wheel", "four directions", "north", "ancestral connection",        "stardust
+          in our bones", "elemental"'
   dimensionalityreduction0:
     _type: DimensionalityReduction
     category: analysis
@@ -550,8 +555,8 @@ nodes:
     category: analysis
     gui_kwargs:
       pos:
-      - -182
-      - 774
+      - -173
+      - 776
       viewers:
         data_embeddings:
           collapsed: false
@@ -597,7 +602,7 @@ nodes:
       table:
         param1: ranking
         param10: value10
-        param2: value2
+        param2: compass
         param3: value3
         param4: value4
         param5: value5
@@ -706,8 +711,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - 85
-      - 137
+      - 84
+      - 132
       viewers:
         output:
           collapsed: false
@@ -754,8 +759,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 171
-      - 435
+      - 123
+      - 442
       viewers:
         data_output:
           collapsed: false
@@ -776,7 +781,41 @@ nodes:
         autotrigger: true
         max_frequency: 1.0
       file:
-        filename: clip32_mean_embeddings.csv
+        filename: openai_clip_vit_base_patch32_max_embeddings.csv
+        freq_multiplier: 1.0
+        header: 0
+        index_column: true
+        name_column: false
+        select: ''
+        type: embedding_csv
+  loadfile1:
+    _type: LoadFile
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 466
+      - 421
+      viewers:
+        data_output:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        string_output:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 1.0
+      file:
+        filename: clip32_words_embeddings.csv
         freq_multiplier: 1.0
         header: 0
         index_column: true
@@ -801,7 +840,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 30.0
+        max_frequency: 10.0
       lsl_stream:
         refresh: false
         source_name: goofi
@@ -832,8 +871,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - -183
-      - 1128
+      - 124
+      - 1141
       viewers:
         out:
           collapsed: false
@@ -874,8 +913,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 790
-      - 1225
+      - 637
+      - 1239
       viewers:
         out:
           collapsed: false
@@ -895,8 +934,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -619
-      - 463
+      - -620
+      - 462
       viewers:
         message:
           collapsed: false
@@ -1009,8 +1048,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 470
-      - 230
+      - 421
+      - 217
       viewers:
         out:
           collapsed: false
@@ -1124,8 +1163,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 377
-      - 745
+      - 358
+      - 776
       viewers:
         out:
           collapsed: false
@@ -1187,8 +1226,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1015
-      - 1253
+      - 874
+      - 1263
       viewers:
         out:
           collapsed: false
@@ -1368,8 +1407,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - 174
-      - 738
+      - 120
+      - 752
       viewers:
         array_out:
           collapsed: false
@@ -1506,7 +1545,7 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -403
+      - -392
       - 101
       viewers:
         top_labels:
@@ -1535,8 +1574,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -415
-      - 724
+      - -489
+      - 747
       viewers:
         frame:
           collapsed: false
