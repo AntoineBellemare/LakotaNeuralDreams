@@ -39,13 +39,13 @@ links:
   node_out: constantarray2
   slot_in: pole1
   slot_out: out
+- node_in: operation5
+  node_out: constantarray3
+  slot_in: b
+  slot_out: out
 - node_in: embedding0
   node_out: constantstring0
   slot_in: text
-  slot_out: out
-- node_in: joinstring0
-  node_out: constantstring0
-  slot_in: string1
   slot_out: out
 - node_in: transpose1
   node_out: dimensionalityreduction0
@@ -63,17 +63,13 @@ links:
   node_out: embedding0
   slot_in: a
   slot_out: text_embeddings
-- node_in: operation3
+- node_in: operation5
   node_out: embedding0
-  slot_in: b
-  slot_out: text_embeddings
+  slot_in: a
+  slot_out: data_embeddings
 - node_in: switch0
   node_out: embedding0
   slot_in: array2
-  slot_out: data_embeddings
-- node_in: operation1
-  node_out: embedding0
-  slot_in: b
   slot_out: data_embeddings
 - node_in: vectordb0
   node_out: embedding0
@@ -116,7 +112,7 @@ links:
   slot_in: a
   slot_out: data_output
 - node_in: dimensionalityreduction0
-  node_out: loadfile1
+  node_out: loadfile0
   slot_in: data
   slot_out: data_output
 - node_in: reduce2
@@ -147,6 +143,10 @@ links:
   node_out: operation4
   slot_in: array
   slot_out: out
+- node_in: operation1
+  node_out: operation5
+  slot_in: b
+  slot_out: out
 - node_in: operation2
   node_out: powerbandeeg0
   slot_in: a
@@ -163,6 +163,10 @@ links:
   node_out: randomarray0
   slot_in: a
   slot_out: random_array
+- node_in: extendedtable0
+  node_out: reduce0
+  slot_in: array_input3
+  slot_out: out
 - node_in: buffer0
   node_out: reduce2
   slot_in: val
@@ -186,6 +190,10 @@ links:
 - node_in: extendedtable0
   node_out: reshape3
   slot_in: array_input1
+  slot_out: out
+- node_in: operation4
+  node_out: reshape5
+  slot_in: a
   slot_out: out
 - node_in: extendedtable1
   node_out: select0
@@ -231,6 +239,10 @@ links:
   node_out: switch0
   slot_in: array
   slot_out: array_out
+- node_in: operation3
+  node_out: switch0
+  slot_in: b
+  slot_out: array_out
 - node_in: oscout1
   node_out: table0
   slot_in: data
@@ -271,18 +283,14 @@ links:
   node_out: welfordsztransform1
   slot_in: b
   slot_out: normalized
-- node_in: operation4
-  node_out: reshape5
-  slot_in: a
-  slot_out: out
 nodes:
   appendtables2:
     _type: AppendTables
     category: misc
     gui_kwargs:
       pos:
-      - 2127
-      - 885
+      - 2852
+      - 777
       viewers:
         output_table:
           collapsed: false
@@ -388,8 +396,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -484
-      - 924
+      - -398
+      - 997
       viewers:
         out:
           collapsed: false
@@ -452,13 +460,13 @@ nodes:
         graph: none
         shape: '2'
         value: 0.0
-  constantstring0:
-    _type: ConstantString
+  constantarray3:
+    _type: ConstantArray
     category: inputs
     gui_kwargs:
       pos:
-      - -190
-      - 471
+      - -400
+      - 1202
       viewers:
         out:
           collapsed: false
@@ -470,9 +478,32 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 1.0
+        max_frequency: 30.0
       constant:
-        value: I had the power to deliver the message and the leadership of my people
+        graph: none
+        shape: '1'
+        value: 0.2
+  constantstring0:
+    _type: ConstantString
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -631
+      - 516
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      constant:
+        value: I was in motion towards the west, looking for abundance and wealth
   dimensionalityreduction0:
     _type: DimensionalityReduction
     category: analysis
@@ -497,7 +528,7 @@ nodes:
           width: 175
     params:
       Control:
-        method: PCA
+        method: UMAP
         n_components: 3
         reset: true
         tsne_perplexity: 6.0
@@ -570,8 +601,8 @@ nodes:
     category: analysis
     gui_kwargs:
       pos:
-      - -173
-      - 776
+      - -401
+      - 662
       viewers:
         data_embeddings:
           collapsed: false
@@ -600,8 +631,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 1893
-      - 728
+      - 2618
+      - 620
       viewers:
         table:
           collapsed: false
@@ -618,7 +649,7 @@ nodes:
         param1: ranking
         param10: value10
         param2: compass
-        param3: value3
+        param3: distance
         param4: value4
         param5: value5
         param6: value6
@@ -630,8 +661,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 1669
-      - 730
+      - 2394
+      - 622
       viewers:
         table:
           collapsed: false
@@ -726,8 +757,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - 84
-      - 132
+      - 125
+      - 122
       viewers:
         output:
           collapsed: false
@@ -808,8 +839,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 466
-      - 421
+      - 583
+      - 430
       viewers:
         data_output:
           collapsed: false
@@ -886,8 +917,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 124
-      - 1141
+      - 115
+      - 1177
       viewers:
         out:
           collapsed: false
@@ -949,8 +980,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1805
-      - 1128
+      - 2411
+      - 1061
       viewers:
         out:
           collapsed: false
@@ -965,13 +996,34 @@ nodes:
         max_frequency: 30.0
       operation:
         operation: subtract
+  operation5:
+    _type: Operation
+    category: array
+    gui_kwargs:
+      pos:
+      - -148
+      - 1182
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      operation:
+        operation: multiply
   oscin0:
     _type: OSCIn
     category: inputs
     gui_kwargs:
       pos:
-      - -620
-      - 462
+      - -1053
+      - 491
       viewers:
         message:
           collapsed: false
@@ -992,8 +1044,8 @@ nodes:
     category: outputs
     gui_kwargs:
       pos:
-      - 2390
-      - 977
+      - 3115
+      - 869
       viewers: {}
     params:
       common:
@@ -1084,8 +1136,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 421
-      - 217
+      - 362
+      - 133
       viewers:
         out:
           collapsed: false
@@ -1155,8 +1207,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 2034
-      - 1135
+      - 2630
+      - 1067
       viewers:
         out:
           collapsed: false
@@ -1305,8 +1357,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1400
-      - 1318
+      - 1571
+      - 1057
       viewers:
         out:
           collapsed: false
@@ -1326,8 +1378,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1619
-      - 1328
+      - 1790
+      - 1067
       viewers:
         out:
           collapsed: false
@@ -1349,8 +1401,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1417
-      - 727
+      - 2023
+      - 660
       viewers:
         out:
           collapsed: false
@@ -1372,8 +1424,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1417
-      - 923
+      - 2023
+      - 856
       viewers:
         out:
           collapsed: false
@@ -1395,8 +1447,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1420
-      - 1119
+      - 2026
+      - 1052
       viewers:
         out:
           collapsed: false
@@ -1418,8 +1470,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1203
-      - 1318
+      - 1374
+      - 1057
       viewers:
         out:
           collapsed: false
@@ -1441,8 +1493,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1193
-      - 727
+      - 1799
+      - 660
       viewers:
         out:
           collapsed: false
@@ -1486,8 +1538,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - 120
-      - 752
+      - 122
+      - 751
       viewers:
         array_out:
           collapsed: false
@@ -1535,8 +1587,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - -415
-      - 457
+      - -848
+      - 486
       viewers:
         output_string:
           collapsed: false
@@ -1578,8 +1630,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 679
-      - 230
+      - 591
+      - 103
       viewers:
         generated_text:
           collapsed: false
@@ -1605,8 +1657,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1093
-      - 921
+      - 1161
+      - 809
       viewers:
         out:
           collapsed: false
@@ -1653,8 +1705,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -489
-      - 747
+      - -642
+      - 702
       viewers:
         frame:
           collapsed: false
@@ -1666,7 +1718,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 1.0
+        max_frequency: 5.0
       video_stream:
         capture_mode: screen
         crop_down: 0
