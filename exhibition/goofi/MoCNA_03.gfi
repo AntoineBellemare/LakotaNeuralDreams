@@ -143,6 +143,10 @@ links:
   node_out: operation3
   slot_in: array
   slot_out: out
+- node_in: reduce0
+  node_out: operation4
+  slot_in: array
+  slot_out: out
 - node_in: operation2
   node_out: powerbandeeg0
   slot_in: a
@@ -203,6 +207,10 @@ links:
   node_out: select7
   slot_in: array_input4
   slot_out: out
+- node_in: reshape5
+  node_out: select7
+  slot_in: array
+  slot_out: out
 - node_in: select4
   node_out: select8
   slot_in: data
@@ -214,6 +222,10 @@ links:
 - node_in: select6
   node_out: select8
   slot_in: data
+  slot_out: out
+- node_in: operation4
+  node_out: select8
+  slot_in: b
   slot_out: out
 - node_in: reshape0
   node_out: switch0
@@ -259,6 +271,10 @@ links:
   node_out: welfordsztransform1
   slot_in: b
   slot_out: normalized
+- node_in: operation4
+  node_out: reshape5
+  slot_in: a
+  slot_out: out
 nodes:
   appendtables2:
     _type: AppendTables
@@ -456,8 +472,7 @@ nodes:
         autotrigger: true
         max_frequency: 1.0
       constant:
-        value: '"star", "medicine wheel", "four directions", "north", "ancestral connection",        "stardust
-          in our bones", "elemental"'
+        value: I had the power to deliver the message and the leadership of my people
   dimensionalityreduction0:
     _type: DimensionalityReduction
     category: analysis
@@ -781,7 +796,7 @@ nodes:
         autotrigger: true
         max_frequency: 1.0
       file:
-        filename: openai_clip_vit_base_patch32_max_embeddings.csv
+        filename: clip32_mean_embeddings.csv
         freq_multiplier: 1.0
         header: 0
         index_column: true
@@ -850,8 +865,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 609
-      - 1563
+      - 611
+      - 1562
       viewers:
         out:
           collapsed: false
@@ -929,6 +944,27 @@ nodes:
         max_frequency: 30.0
       operation:
         operation: cosine_similarity
+  operation4:
+    _type: Operation
+    category: array
+    gui_kwargs:
+      pos:
+      - 1805
+      - 1128
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      operation:
+        operation: subtract
   oscin0:
     _type: OSCIn
     category: inputs
@@ -1114,6 +1150,28 @@ nodes:
         distribution: normal
         normalize_eigenvalue: false
         reset: true
+  reduce0:
+    _type: Reduce
+    category: array
+    gui_kwargs:
+      pos:
+      - 2034
+      - 1135
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      reduce:
+        axis: 0
+        method: norm
   reduce2:
     _type: Reduce
     category: array
@@ -1242,13 +1300,34 @@ nodes:
         max_frequency: 30.0
       reshape:
         shape: '-1'
+  reshape5:
+    _type: Reshape
+    category: array
+    gui_kwargs:
+      pos:
+      - 1400
+      - 1318
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      reshape:
+        shape: 3, 1
   select0:
     _type: Select
     category: array
     gui_kwargs:
       pos:
-      - 1611
-      - 1302
+      - 1619
+      - 1328
       viewers:
         out:
           collapsed: false
@@ -1316,8 +1395,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1418
-      - 1117
+      - 1420
+      - 1119
       viewers:
         out:
           collapsed: false
@@ -1339,8 +1418,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1220
-      - 1116
+      - 1203
+      - 1318
       viewers:
         out:
           collapsed: false
@@ -1362,8 +1441,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1194
-      - 726
+      - 1193
+      - 727
       viewers:
         out:
           collapsed: false
@@ -1526,8 +1605,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1119
-      - 923
+      - 1093
+      - 921
       viewers:
         out:
           collapsed: false
@@ -1587,7 +1666,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 30.0
+        max_frequency: 1.0
       video_stream:
         capture_mode: screen
         crop_down: 0
