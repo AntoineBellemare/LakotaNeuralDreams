@@ -63,6 +63,7 @@ class LatentDreamscapeGUI:
         self.text_label.pack(pady=5)
         self.text_entry = tk.Text(self.text_frame, width=40, height=20, wrap="word",
                                 relief="solid", bd=2, font=("Courier", 12))
+        self.text_entry.bind("<Key>", lambda event: self.schedule_text_send())
         self.text_entry.pack(pady=(100, 5))  # Adjust the top padding (100 is an example)
         self.send_button = tk.Button(self.text_frame, text="Send", command=self.send_text, font=("Courier", 12))
         self.send_button.pack(pady=5)
@@ -314,6 +315,8 @@ class LatentDreamscapeGUI:
                                     width=pen_size, fill=pen_color, capstyle=tk.ROUND, smooth=True)
         self.current_drawn_lines.append(line)  # Track this line for the current draw action
         self.last_x, self.last_y = event.x, event.y
+        self.send_state()
+
 
 
     def reset_last_position(self, event):
@@ -326,9 +329,12 @@ class LatentDreamscapeGUI:
 
 
     def clear_canvas(self):
-        """Clear the drawing canvas."""
+        """Clear the drawing canvas and reset the action stack."""
         self.canvas.delete("all")
+        self.action_stack.clear()  # Clear the action stack
         self.last_activity_time = time.time()
+        self.send_state()  # Update the state after clearing
+
 
     def send_text(self):
         """Send text input via OSC with green feedback."""
@@ -338,6 +344,41 @@ class LatentDreamscapeGUI:
             self.text_entry.config(highlightbackground="green", highlightthickness=2)
             self.root.after(1000, lambda: self.text_entry.config(highlightthickness=0))
         self.last_activity_time = time.time()
+        self.send_state()
+
+    def schedule_text_send(self):
+        """Schedule sending text after 1 second of inactivity."""
+        self.last_activity_time = time.time()  # Update the last activity time
+        if hasattr(self, 'text_send_timer'):
+            self.root.after_cancel(self.text_send_timer)  # Cancel the previous timer
+        self.text_send_timer = self.root.after(1000, self.send_text_if_inactive)  # Schedule a new timer
+
+    def send_text_if_inactive(self):
+        """Send the text if 1 second has passed since the last activity."""
+        if time.time() - self.last_activity_time >= 1:
+            self.send_text()
+
+
+    def calculate_state(self):
+        """Calculate the current state based on text and drawing activity."""
+        text_present = bool(self.text_entry.get("1.0", tk.END).strip())  # Check if text exists
+        drawing_present = bool(self.action_stack)  # Check if any drawing actions exist
+
+        if text_present and drawing_present:
+            return 3  # Both text and drawing
+        elif text_present:
+            return 1  # Only text
+        elif drawing_present:
+            return 2  # Only drawing
+        else:
+            return 0  # Neither text nor drawing
+
+    def send_state(self):
+        """Send the current state as an OSC message."""
+        state = self.calculate_state()
+        self.client.send_message(b"/current_state", [state])  # Sending as integer
+        print(f"State sent: {state}")
+
 
     def update_eeg_status(self, status):
         """Update EEG status light."""
@@ -395,6 +436,8 @@ class LatentDreamscapeGUI:
             # Send False every second if criteria not met
             self.client.send_message(b"/default_mode", [b"False"])
             print("Default Mode Active: False sent.")
+            self.send_state()
+
 
         # Check inactivity again after 1 second
         self.root.after(1000, self.check_inactivity)

@@ -23,10 +23,6 @@ links:
   node_out: compass0
   slot_in: array_input2
   slot_out: angles
-- node_in: switch0
-  node_out: constantarray0
-  slot_in: selector
-  slot_out: out
 - node_in: table0
   node_out: constantarray1
   slot_in: new_entry
@@ -38,6 +34,14 @@ links:
 - node_in: operation5
   node_out: constantarray3
   slot_in: b
+  slot_out: out
+- node_in: embedding0
+  node_out: constantstring0
+  slot_in: text
+  slot_out: out
+- node_in: joinstring0
+  node_out: constantstring0
+  slot_in: string1
   slot_out: out
 - node_in: joinstring1
   node_out: constantstring2
@@ -51,10 +55,6 @@ links:
   node_out: eegembedding0
   slot_in: array
   slot_out: embeddings
-- node_in: switch0
-  node_out: embedding0
-  slot_in: array1
-  slot_out: text_embeddings
 - node_in: operation1
   node_out: embedding0
   slot_in: a
@@ -63,17 +63,21 @@ links:
   node_out: embedding0
   slot_in: input_vector
   slot_out: text_embeddings
+- node_in: switch0
+  node_out: embedding0
+  slot_in: array1
+  slot_out: text_embeddings
 - node_in: operation5
   node_out: embedding0
   slot_in: a
   slot_out: data_embeddings
-- node_in: switch0
-  node_out: embedding0
-  slot_in: array2
-  slot_out: data_embeddings
 - node_in: vectordb0
   node_out: embedding0
   slot_in: input_vector
+  slot_out: data_embeddings
+- node_in: switch0
+  node_out: embedding0
+  slot_in: array2
   slot_out: data_embeddings
 - node_in: appendtables2
   node_out: extendedtable0
@@ -135,6 +139,10 @@ links:
   node_out: operation0
   slot_in: eeg
   slot_out: out
+- node_in: switch0
+  node_out: operation1
+  slot_in: array3
+  slot_out: out
 - node_in: welfordsztransform0
   node_out: operation2
   slot_in: data
@@ -151,7 +159,11 @@ links:
   node_out: operation5
   slot_in: b
   slot_out: out
-- node_in: tableselectstring0
+- node_in: tableselectstring1
+  node_out: oscin0
+  slot_in: input_table
+  slot_out: message
+- node_in: tableselectarray0
   node_out: oscin0
   slot_in: input_table
   slot_out: message
@@ -163,18 +175,10 @@ links:
   node_out: powerbandeeg0
   slot_in: b
   slot_out: alpha
-- node_in: textgeneration0
-  node_out: promptbook0
-  slot_in: prompt
-  slot_out: out
 - node_in: powerbandeeg0
   node_out: psd0
   slot_in: data
   slot_out: psd
-- node_in: operation0
-  node_out: randomarray0
-  slot_in: a
-  slot_out: random_array
 - node_in: extendedtable0
   node_out: reduce0
   slot_in: array_input3
@@ -247,26 +251,10 @@ links:
   node_out: select8
   slot_in: b
   slot_out: out
-- node_in: reshape0
-  node_out: switch0
-  slot_in: array
-  slot_out: array_out
-- node_in: operation3
-  node_out: switch0
-  slot_in: b
-  slot_out: array_out
 - node_in: oscout1
   node_out: table0
   slot_in: data
   slot_out: table
-- node_in: embedding0
-  node_out: tableselectstring0
-  slot_in: text
-  slot_out: output_string
-- node_in: joinstring0
-  node_out: tableselectstring0
-  slot_in: string1
-  slot_out: output_string
 - node_in: joinstring0
   node_out: tabletostring0
   slot_in: string2
@@ -319,6 +307,18 @@ links:
   node_out: welfordsztransform1
   slot_in: array_input5
   slot_out: normalized
+- node_in: reshape0
+  node_out: switch0
+  slot_in: array
+  slot_out: array_out
+- node_in: operation3
+  node_out: switch0
+  slot_in: b
+  slot_out: array_out
+- node_in: switch0
+  node_out: tableselectarray0
+  slot_in: selector
+  slot_out: output_array
 nodes:
   appendtables2:
     _type: AppendTables
@@ -427,29 +427,6 @@ nodes:
       common:
         autotrigger: false
         max_frequency: 30.0
-  constantarray0:
-    _type: ConstantArray
-    category: inputs
-    gui_kwargs:
-      pos:
-      - -398
-      - 997
-      viewers:
-        out:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: true
-        max_frequency: 30.0
-      constant:
-        graph: none
-        shape: '1'
-        value: 1.0
   constantarray1:
     _type: ConstantArray
     category: inputs
@@ -501,8 +478,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -400
-      - 1202
+      - -494
+      - 1178
       viewers:
         out:
           collapsed: false
@@ -524,8 +501,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -846
-      - 312
+      - -857
+      - 309
       viewers:
         out:
           collapsed: false
@@ -545,8 +522,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -1093
-      - 126
+      - -1081
+      - 111
       viewers:
         out:
           collapsed: false
@@ -558,7 +535,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 30.0
+        max_frequency: 1.0
       constant:
         value: Respond with a description of a surreal dream in one sentence.
   constantstring2:
@@ -1022,8 +999,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 115
-      - 1177
+      - -40
+      - 1162
       viewers:
         out:
           collapsed: false
@@ -1064,8 +1041,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 637
-      - 1239
+      - 363
+      - 986
       viewers:
         out:
           collapsed: false
@@ -1106,8 +1083,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - -148
-      - 1182
+      - -268
+      - 1169
       viewers:
         out:
           collapsed: false
@@ -1127,8 +1104,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -1053
-      - 491
+      - -1301
+      - 500
       viewers:
         message:
           collapsed: false
@@ -1242,15 +1219,15 @@ nodes:
     gui_kwargs:
       pos:
       - 362
-      - 133
+      - 87
       viewers:
         out:
           collapsed: false
-          height: 100
+          height: 190
           log_scale_x: false
           log_scale_y: false
           viewer_idx: 0
-          width: 175
+          width: 265
     params:
       Text_Generation:
         selected_prompt: TXT2IMG_DREAM_PROMPT
@@ -1621,8 +1598,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - 122
-      - 751
+      - -113
+      - 662
       viewers:
         array_out:
           collapsed: false
@@ -1665,13 +1642,34 @@ nodes:
         max_frequency: 30.0
       table:
         new_entry_key: eeg_status
-  tableselectstring0:
+  tableselectarray0:
+    _type: TableSelectArray
+    category: misc
+    gui_kwargs:
+      pos:
+      - -1054
+      - 709
+      viewers:
+        output_array:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      selection:
+        key: /current_state
+  tableselectstring1:
     _type: TableSelectString
     category: misc
     gui_kwargs:
       pos:
-      - -848
-      - 486
+      - -1058
+      - 500
       viewers:
         output_string:
           collapsed: false
@@ -1735,8 +1733,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 603
-      - 133
+      - 695
+      - 119
       viewers:
         generated_text:
           collapsed: false
@@ -1762,7 +1760,7 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -872
+      - -857
       - 113
       viewers:
         generated_text:
@@ -1828,7 +1826,7 @@ nodes:
     params:
       Control:
         database_path: index_500words_clip-vit-base-patch32.pkl
-        top_n: 12
+        top_n: 6
       common:
         autotrigger: false
         max_frequency: 30.0
