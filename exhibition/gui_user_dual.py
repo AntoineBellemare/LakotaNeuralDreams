@@ -56,7 +56,7 @@ class LatentDreamscapeGUI:
         self.main_frame.pack(fill="both", expand=True)
 
         # Text Frame on the left
-        self.text_frame = tk.Frame(self.main_frame, bg="#f0f0f0", width=300)
+        self.text_frame = tk.Frame(self.main_frame, bg="#f0f0f0", width=250, height=200)
         self.text_frame.pack(side="left", fill="y", padx=20)  # Add padding on the left
 
         self.text_label = tk.Label(self.text_frame, text="Write your dream:", font=("Courier", 14), bg="#f0f0f0")
@@ -64,45 +64,50 @@ class LatentDreamscapeGUI:
         self.text_entry = tk.Text(self.text_frame, width=40, height=20, wrap="word",
                                 relief="solid", bd=2, font=("Courier", 12))
         self.text_entry.bind("<Key>", lambda event: self.schedule_text_send())
-        self.text_entry.pack(pady=(100, 5))  # Adjust the top padding (100 is an example)
+        self.text_entry.pack(pady=(20, 5))  # Reduce top padding to move it up
         self.send_button = tk.Button(self.text_frame, text="Send", command=self.send_text, font=("Courier", 12))
         self.send_button.pack(pady=5)
 
         # EEG Status Section (Added below the text box)
         self.eeg_frame = tk.Frame(self.text_frame, bg="#f0f0f0")
-        self.eeg_frame.pack(pady=(20, 0), fill="x")  # Add spacing and ensure it spans the width
+        self.eeg_frame.pack(pady=(5, 0), fill="x", padx=10, anchor="w")  # Align left, move up
 
         self.eeg_label = tk.Label(self.eeg_frame, text="EEG Status", font=("Courier", 14), bg="#f0f0f0")
-        self.eeg_label.pack(anchor="center")  # Center the label within the frame
+        self.eeg_label.pack(anchor="w")  # Align left
 
-        self.eeg_status_canvas = tk.Canvas(self.eeg_frame, width=60, height=60, bd=0, highlightthickness=0)
-        self.eeg_status_canvas.pack(anchor="center", pady=(5, 0))  # Center the canvas below the label
+        # Container for EEG status light and legend
+        self.eeg_status_container = tk.Frame(self.eeg_frame, bg="#f0f0f0")
+        self.eeg_status_container.pack(fill="x", padx=5, pady=5)
 
-        # EEG Legend Box
-        self.eeg_legend_frame = tk.Frame(self.eeg_frame, bg="#f0f0f0")
-        self.eeg_legend_frame.pack(anchor="center", pady=(10, 0))
+        # EEG Status Light
+        self.eeg_status_canvas = tk.Canvas(self.eeg_status_container, width=60, height=60, bd=0, highlightthickness=0)
+        self.eeg_status_canvas.pack(side="left", padx=(0, 10), pady=5)  # Align left, space right
 
-        # Legend Items
+        # EEG Legend Box (Right of the status light)
+        self.eeg_legend_frame = tk.Frame(self.eeg_status_container, bg="#f0f0f0")
+        self.eeg_legend_frame.pack(side="left", padx=10)  # Move descriptions to the right of the light
+
         # Green Circle and Label
         self.green_canvas = tk.Canvas(self.eeg_legend_frame, width=20, height=20, bd=0, highlightthickness=0)
         self.green_canvas.create_oval(2, 2, 18, 18, fill="green")
         self.green_canvas.grid(row=0, column=0, padx=5)
-        green_label = tk.Label(self.eeg_legend_frame, text="EEG good signal", font=("Courier", 10), bg="#f0f0f0")
+        green_label = tk.Label(self.eeg_legend_frame, text="Good Signal", font=("Courier", 10), bg="#f0f0f0")
         green_label.grid(row=0, column=1, sticky="w")
 
         # Yellow Circle and Label
         self.yellow_canvas = tk.Canvas(self.eeg_legend_frame, width=20, height=20, bd=0, highlightthickness=0)
         self.yellow_canvas.create_oval(2, 2, 18, 18, fill="yellow")
         self.yellow_canvas.grid(row=1, column=0, padx=5)
-        yellow_label = tk.Label(self.eeg_legend_frame, text="EEG bad signal", font=("Courier", 10), bg="#f0f0f0")
+        yellow_label = tk.Label(self.eeg_legend_frame, text="Weak Signal", font=("Courier", 10), bg="#f0f0f0")
         yellow_label.grid(row=1, column=1, sticky="w")
 
         # Red Circle and Label
         self.red_canvas = tk.Canvas(self.eeg_legend_frame, width=20, height=20, bd=0, highlightthickness=0)
         self.red_canvas.create_oval(2, 2, 18, 18, fill="red")
         self.red_canvas.grid(row=2, column=0, padx=5)
-        red_label = tk.Label(self.eeg_legend_frame, text="EEG disconnected", font=("Courier", 10), bg="#f0f0f0")
+        red_label = tk.Label(self.eeg_legend_frame, text="Disconnected", font=("Courier", 10), bg="#f0f0f0")
         red_label.grid(row=2, column=1, sticky="w")
+
 
 
         # Drawing Frame on the right
@@ -131,7 +136,7 @@ class LatentDreamscapeGUI:
         self.eraser_button.pack(side="left", padx=5)
 
         # Drawing Canvas
-        self.canvas = tk.Canvas(self.drawing_frame, width=1000, height=600, bg="white", relief="solid", bd=2)
+        self.canvas = tk.Canvas(self.drawing_frame, width=600, height=400, bg="white", relief="solid", bd=2)
         self.canvas.pack(pady=5)
         self.canvas.bind("<B1-Motion>", self.draw)
         self.canvas.bind("<ButtonPress-1>", self.reset_last_position)
@@ -288,12 +293,18 @@ class LatentDreamscapeGUI:
 
     def toggle_eraser(self):
         """Toggle eraser mode on or off."""
-        self.eraser_mode = not self.eraser_mode
         if self.eraser_mode:
-            self.eraser_button.config(relief="sunken")
-            self.pen_color = "white"
-        else:
+            # If eraser mode is on, switch back to the last selected pen color
+            self.eraser_mode = False
+            self.pen_color = self.last_pen_color  # Restore the saved pen color
             self.eraser_button.config(relief="raised")
+        else:
+            # Save current pen color before switching to eraser
+            self.last_pen_color = self.pen_color  
+            self.eraser_mode = True
+            self.pen_color = "white"
+            self.eraser_button.config(relief="sunken")
+
 
     def choose_color(self):
         """Open color picker to choose a pen color."""
