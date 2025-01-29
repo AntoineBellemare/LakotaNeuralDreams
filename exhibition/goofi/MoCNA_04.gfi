@@ -51,10 +51,6 @@ links:
   node_out: constantstring2
   slot_in: string1
   slot_out: out
-- node_in: transpose1
-  node_out: dimensionalityreduction0
-  slot_in: array
-  slot_out: new_components
 - node_in: reshape2
   node_out: eegembedding0
   slot_in: array
@@ -115,6 +111,18 @@ links:
   node_out: lempelziv0
   slot_in: data
   slot_out: lzc
+- node_in: join1
+  node_out: loadfile0
+  slot_in: a
+  slot_out: data_output
+- node_in: operation3
+  node_out: loadfile0
+  slot_in: a
+  slot_out: data_output
+- node_in: dimensionalityreduction0
+  node_out: loadfile0
+  slot_in: data
+  slot_out: data_output
 - node_in: select1
   node_out: lslclient1
   slot_in: data
@@ -299,10 +307,6 @@ links:
   node_out: vectordb1
   slot_in: table
   slot_out: top_labels
-- node_in: embedding0
-  node_out: videostream0
-  slot_in: data
-  slot_out: frame
 - node_in: join0
   node_out: welfordsztransform0
   slot_in: a
@@ -319,18 +323,6 @@ links:
   node_out: welfordsztransform1
   slot_in: array_input5
   slot_out: normalized
-- node_in: join1
-  node_out: loadfile0
-  slot_in: a
-  slot_out: data_output
-- node_in: dimensionalityreduction0
-  node_out: loadfile0
-  slot_in: data
-  slot_out: data_output
-- node_in: operation3
-  node_out: loadfile0
-  slot_in: a
-  slot_out: data_output
 nodes:
   appendtables2:
     _type: AppendTables
@@ -444,8 +436,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -724
-      - 978
+      - -731
+      - 893
       viewers:
         out:
           collapsed: false
@@ -549,7 +541,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 30.0
+        max_frequency: 1.0
       constant:
         value: I was travelling with my bag full of medicine, while I saw a fire burning
           hard
@@ -601,8 +593,8 @@ nodes:
     category: analysis
     gui_kwargs:
       pos:
-      - 930
-      - 548
+      - 908
+      - 542
       viewers:
         new_components:
           collapsed: false
@@ -623,7 +615,7 @@ nodes:
         method: UMAP
         n_components: 3
         reset: true
-        tsne_perplexity: 6.0
+        tsne_perplexity: 30.0
         umap_neighbors: 7.0
       common:
         autotrigger: false
@@ -805,8 +797,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 579
-      - 546
+      - 593
+      - 607
       viewers:
         out:
           collapsed: false
@@ -827,8 +819,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 785
-      - 946
+      - 747
+      - 923
       viewers:
         out:
           collapsed: false
@@ -840,7 +832,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 5.0
+        max_frequency: 1.0
       join:
         axis: 0
         method: concatenate
@@ -923,8 +915,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 255
-      - 437
+      - 307
+      - 399
       viewers:
         data_output:
           collapsed: false
@@ -942,7 +934,7 @@ nodes:
           width: 175
     params:
       common:
-        autotrigger: true
+        autotrigger: false
         max_frequency: 1.0
       file:
         filename: clip32_mean_embeddings.csv
@@ -1884,35 +1876,6 @@ nodes:
       common:
         autotrigger: false
         max_frequency: 30.0
-  videostream0:
-    _type: VideoStream
-    category: inputs
-    gui_kwargs:
-      pos:
-      - -642
-      - 702
-      viewers:
-        frame:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 1
-          width: 175
-    params:
-      common:
-        autotrigger: true
-        max_frequency: 5.0
-      video_stream:
-        capture_mode: screen
-        crop_down: 0
-        crop_left: 0
-        crop_right: 0
-        crop_top: 0
-        device_index: 0
-        mirror: true
-        screen_index: 1
-        screen_region: full
   welfordsztransform0:
     _type: WelfordsZTransform
     category: signal
