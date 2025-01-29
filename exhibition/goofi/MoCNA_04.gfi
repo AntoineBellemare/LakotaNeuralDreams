@@ -51,6 +51,10 @@ links:
   node_out: constantstring2
   slot_in: string1
   slot_out: out
+- node_in: transpose1
+  node_out: dimensionalityreduction0
+  slot_in: array
+  slot_out: new_components
 - node_in: reshape2
   node_out: eegembedding0
   slot_in: array
@@ -362,7 +366,7 @@ nodes:
       buffer:
         axis: -1
         reset: false
-        size: 520
+        size: 1024
       common:
         autotrigger: false
         max_frequency: 30.0
@@ -614,7 +618,7 @@ nodes:
       Control:
         method: UMAP
         n_components: 3
-        reset: true
+        reset: false
         tsne_perplexity: 30.0
         umap_neighbors: 7.0
       common:
