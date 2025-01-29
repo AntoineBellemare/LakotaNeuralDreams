@@ -11,10 +11,6 @@ links:
   node_out: buffer0
   slot_in: data
   slot_out: out
-- node_in: operation0
-  node_out: buffer2
-  slot_in: b
-  slot_out: out
 - node_in: operation6
   node_out: buffer3
   slot_in: b
@@ -119,33 +115,9 @@ links:
   node_out: lempelziv0
   slot_in: data
   slot_out: lzc
-- node_in: join1
-  node_out: loadfile0
-  slot_in: a
-  slot_out: data_output
-- node_in: operation3
-  node_out: loadfile0
-  slot_in: a
-  slot_out: data_output
-- node_in: dimensionalityreduction0
-  node_out: loadfile0
-  slot_in: data
-  slot_out: data_output
-- node_in: resample0
-  node_out: lslclient0
-  slot_in: data
-  slot_out: out
-- node_in: eegheadsetdetection0
-  node_out: lslclient1
-  slot_in: eeg_data
-  slot_out: out
 - node_in: select1
   node_out: lslclient1
   slot_in: data
-  slot_out: out
-- node_in: eegembedding0
-  node_out: operation0
-  slot_in: eeg
   slot_out: out
 - node_in: switch0
   node_out: operation1
@@ -166,6 +138,10 @@ links:
 - node_in: operation1
   node_out: operation5
   slot_in: b
+  slot_out: out
+- node_in: eegembedding0
+  node_out: operation6
+  slot_in: eeg
   slot_out: out
 - node_in: tableselectstring1
   node_out: oscin0
@@ -191,10 +167,6 @@ links:
   node_out: psd0
   slot_in: data
   slot_out: psd
-- node_in: operation0
-  node_out: randomarray0
-  slot_in: a
-  slot_out: random_array
 - node_in: operation6
   node_out: randomarray1
   slot_in: a
@@ -205,10 +177,6 @@ links:
   slot_out: out
 - node_in: buffer0
   node_out: reduce2
-  slot_in: val
-  slot_out: out
-- node_in: buffer2
-  node_out: resample0
   slot_in: val
   slot_out: out
 - node_in: buffer3
@@ -351,6 +319,18 @@ links:
   node_out: welfordsztransform1
   slot_in: array_input5
   slot_out: normalized
+- node_in: join1
+  node_out: loadfile0
+  slot_in: a
+  slot_out: data_output
+- node_in: dimensionalityreduction0
+  node_out: loadfile0
+  slot_in: data
+  slot_out: data_output
+- node_in: operation3
+  node_out: loadfile0
+  slot_in: a
+  slot_out: data_output
 nodes:
   appendtables2:
     _type: AppendTables
@@ -414,29 +394,6 @@ nodes:
         axis: -1
         reset: false
         size: 360
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-  buffer2:
-    _type: Buffer
-    category: signal
-    gui_kwargs:
-      pos:
-      - 209
-      - 1461
-      viewers:
-        out:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      buffer:
-        axis: -1
-        reset: false
-        size: 440
       common:
         autotrigger: false
         max_frequency: 30.0
@@ -713,31 +670,13 @@ nodes:
         max_frequency: 30.0
       threshold:
         average_value: 500.0
-  eegrecording0:
-    _type: EEGRecording
-    category: inputs
-    gui_kwargs:
-      pos:
-      - -57
-      - 1773
-      viewers: {}
-    params:
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-      recording:
-        file_path: ''
-        file_sfreq: 256.0
-        source_name: goofi
-        stream_name: recording
-        use_example_data: true
   eegrecording1:
     _type: EEGRecording
     category: inputs
     gui_kwargs:
       pos:
-      - -432
-      - 1788
+      - -629
+      - 1771
       viewers: {}
     params:
       common:
@@ -866,8 +805,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 584
-      - 733
+      - 579
+      - 546
       viewers:
         out:
           collapsed: false
@@ -984,8 +923,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 123
-      - 442
+      - 255
+      - 437
       viewers:
         data_output:
           collapsed: false
@@ -1013,63 +952,6 @@ nodes:
         name_column: false
         select: ''
         type: embedding_csv
-  loadfile1:
-    _type: LoadFile
-    category: inputs
-    gui_kwargs:
-      pos:
-      - 583
-      - 430
-      viewers:
-        data_output:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-        string_output:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: true
-        max_frequency: 1.0
-      file:
-        filename: clip32_words_embeddings.csv
-        freq_multiplier: 1.0
-        header: 0
-        index_column: true
-        name_column: false
-        select: ''
-        type: embedding_csv
-  lslclient0:
-    _type: LSLClient
-    category: inputs
-    gui_kwargs:
-      pos:
-      - -60
-      - 1850
-      viewers:
-        out:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: true
-        max_frequency: 5.0
-      lsl_stream:
-        refresh: false
-        source_name: goofi
-        stream_name: ''
   lslclient1:
     _type: LSLClient
     category: inputs
@@ -1093,27 +975,6 @@ nodes:
         refresh: false
         source_name: muse
         stream_name: ''
-  operation0:
-    _type: Operation
-    category: array
-    gui_kwargs:
-      pos:
-      - 427
-      - 1531
-      viewers:
-        out:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-      operation:
-        operation: matmul
   operation1:
     _type: Operation
     category: array
@@ -1386,8 +1247,8 @@ nodes:
         psd:
           collapsed: false
           height: 100
-          log_scale_x: false
-          log_scale_y: false
+          log_scale_x: true
+          log_scale_y: true
           viewer_idx: 0
           width: 175
     params:
@@ -1401,30 +1262,6 @@ nodes:
         noverlap: 0
         precision: 0.1
         smooth_welch: 1
-  randomarray0:
-    _type: RandomArray
-    category: inputs
-    gui_kwargs:
-      pos:
-      - 207
-      - 1658
-      viewers:
-        random_array:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: true
-        max_frequency: 30.0
-      random:
-        dimensions: 128, 64
-        distribution: normal
-        normalize_eigenvalue: false
-        reset: true
   randomarray1:
     _type: RandomArray
     category: inputs
@@ -1493,28 +1330,6 @@ nodes:
       reduce:
         axis: 0
         method: mean
-  resample0:
-    _type: Resample
-    category: signal
-    gui_kwargs:
-      pos:
-      - -32
-      - 1466
-      viewers:
-        out:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-      resample:
-        axis: -1
-        new_sfreq: 1000
   resample1:
     _type: Resample
     category: signal
