@@ -71,6 +71,10 @@ links:
   node_out: embedding0
   slot_in: array1
   slot_out: text_embeddings
+- node_in: operation0
+  node_out: embedding0
+  slot_in: a
+  slot_out: text_embeddings
 - node_in: operation5
   node_out: embedding0
   slot_in: a
@@ -307,10 +311,18 @@ links:
   node_out: vectordb0
   slot_in: table
   slot_out: top_labels
+- node_in: reduce1
+  node_out: vectordb0
+  slot_in: array
+  slot_out: vectors
 - node_in: tabletostring1
   node_out: vectordb1
   slot_in: table
   slot_out: top_labels
+- node_in: embedding0
+  node_out: videostream0
+  slot_in: data
+  slot_out: frame
 - node_in: join0
   node_out: welfordsztransform0
   slot_in: a
@@ -327,6 +339,10 @@ links:
   node_out: welfordsztransform1
   slot_in: array_input5
   slot_out: normalized
+- node_in: operation0
+  node_out: reduce1
+  slot_in: b
+  slot_out: out
 nodes:
   appendtables2:
     _type: AppendTables
@@ -440,8 +456,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -731
-      - 893
+      - -737
+      - 884
       viewers:
         out:
           collapsed: false
@@ -457,7 +473,7 @@ nodes:
       constant:
         graph: none
         shape: '1'
-        value: 1.0
+        value: 3.0
   constantarray1:
     _type: ConstantArray
     category: inputs
@@ -526,14 +542,14 @@ nodes:
       constant:
         graph: none
         shape: '1'
-        value: 0.2
+        value: 0.5
   constantstring0:
     _type: ConstantString
     category: inputs
     gui_kwargs:
       pos:
-      - -750
-      - 393
+      - -806
+      - 357
       viewers:
         out:
           collapsed: false
@@ -545,10 +561,9 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 1.0
+        max_frequency: 30.0
       constant:
-        value: I was travelling with my bag full of medicine, while I saw a fire burning
-          hard
+        value: in the four directions
   constantstring1:
     _type: ConstantString
     category: inputs
@@ -711,8 +726,8 @@ nodes:
         autotrigger: false
         max_frequency: 30.0
       embedding:
+        device: cpu
         model: openai/clip-vit-base-patch32
-        processing: cpu
         split_by_comma: false
   extendedtable0:
     _type: ExtendedTable
@@ -824,7 +839,7 @@ nodes:
     gui_kwargs:
       pos:
       - 747
-      - 923
+      - 924
       viewers:
         out:
           collapsed: false
@@ -836,7 +851,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 1.0
+        max_frequency: 2.0
       join:
         axis: 0
         method: concatenate
@@ -920,7 +935,7 @@ nodes:
     gui_kwargs:
       pos:
       - 307
-      - 399
+      - 400
       viewers:
         data_output:
           collapsed: false
@@ -941,7 +956,7 @@ nodes:
         autotrigger: false
         max_frequency: 1.0
       file:
-        filename: clip32_mean_embeddings.csv
+        filename: clip32_mean_embeddings2.csv
         freq_multiplier: 1.0
         header: 0
         index_column: true
@@ -971,6 +986,27 @@ nodes:
         refresh: false
         source_name: muse
         stream_name: ''
+  operation0:
+    _type: Operation
+    category: array
+    gui_kwargs:
+      pos:
+      - 40
+      - 419
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      operation:
+        operation: max
   operation1:
     _type: Operation
     category: array
@@ -1304,6 +1340,28 @@ nodes:
       reduce:
         axis: 0
         method: norm
+  reduce1:
+    _type: Reduce
+    category: array
+    gui_kwargs:
+      pos:
+      - -175
+      - 314
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      reduce:
+        axis: 0
+        method: mean
   reduce2:
     _type: Reduce
     category: array
@@ -1689,7 +1747,7 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - -1058
+      - -1057
       - 500
       viewers:
         output_string:
@@ -1847,7 +1905,7 @@ nodes:
     params:
       Control:
         database_path: index_500words_clip-vit-base-patch32.pkl
-        top_n: 6
+        top_n: 9
       common:
         autotrigger: false
         max_frequency: 30.0
@@ -1880,6 +1938,33 @@ nodes:
       common:
         autotrigger: false
         max_frequency: 30.0
+  videostream0:
+    _type: VideoStream
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -745
+      - 664
+      viewers:
+        frame:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 1
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 2.0
+      video_stream:
+        capture_mode: screen
+        crop_bottom: 308
+        crop_left: 867
+        crop_right: 196
+        crop_top: 168
+        device_index: 1
+        mirror: false
   welfordsztransform0:
     _type: WelfordsZTransform
     category: signal
