@@ -3,6 +3,10 @@ links:
   node_out: appendtables2
   slot_in: data
   slot_out: output_table
+- node_in: writecsv0
+  node_out: appendtables2
+  slot_in: table_input
+  slot_out: output_table
 - node_in: psd0
   node_out: buffer0
   slot_in: data
@@ -39,13 +43,9 @@ links:
   node_out: constantarray3
   slot_in: b
   slot_out: out
-- node_in: embedding0
-  node_out: constantstring0
-  slot_in: text
-  slot_out: out
-- node_in: joinstring0
-  node_out: constantstring0
-  slot_in: string1
+- node_in: textgeneration1
+  node_out: constantstring1
+  slot_in: prompt
   slot_out: out
 - node_in: joinstring1
   node_out: constantstring2
@@ -191,6 +191,10 @@ links:
   node_out: reduce0
   slot_in: array_input3
   slot_out: out
+- node_in: operation0
+  node_out: reduce1
+  slot_in: b
+  slot_out: out
 - node_in: buffer0
   node_out: reduce2
   slot_in: val
@@ -295,6 +299,14 @@ links:
   node_out: textgeneration0
   slot_in: string_input1
   slot_out: generated_text
+- node_in: embedding0
+  node_out: textgeneration1
+  slot_in: text
+  slot_out: generated_text
+- node_in: joinstring0
+  node_out: textgeneration1
+  slot_in: string1
+  slot_out: generated_text
 - node_in: select7
   node_out: transpose1
   slot_in: data
@@ -339,10 +351,6 @@ links:
   node_out: welfordsztransform1
   slot_in: array_input5
   slot_out: normalized
-- node_in: operation0
-  node_out: reduce1
-  slot_in: b
-  slot_out: out
 nodes:
   appendtables2:
     _type: AppendTables
@@ -350,15 +358,15 @@ nodes:
     gui_kwargs:
       pos:
       - 2852
-      - 777
+      - 742
       viewers:
         output_table:
           collapsed: false
-          height: 120
+          height: 140
           log_scale_x: false
           log_scale_y: false
           viewer_idx: 0
-          width: 195
+          width: 215
     params:
       common:
         autotrigger: false
@@ -456,8 +464,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -737
-      - 884
+      - -739
+      - 875
       viewers:
         out:
           collapsed: false
@@ -473,7 +481,7 @@ nodes:
       constant:
         graph: none
         shape: '1'
-        value: 3.0
+        value: 1.0
   constantarray1:
     _type: ConstantArray
     category: inputs
@@ -548,8 +556,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -806
-      - 357
+      - -743
+      - 467
       viewers:
         out:
           collapsed: false
@@ -569,8 +577,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -1081
-      - 111
+      - -981
+      - 245
       viewers:
         out:
           collapsed: false
@@ -605,7 +613,7 @@ nodes:
         autotrigger: true
         max_frequency: 30.0
       constant:
-        value: a lakota traditional symbol, with intricatred colorful design, on a
+        value: a lakota traditional symbol, with intricated colorful design, on a
           black backghround, made of the following elements
   dimensionalityreduction0:
     _type: DimensionalityReduction
@@ -851,7 +859,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 2.0
+        max_frequency: 5.0
       join:
         axis: 0
         method: concatenate
@@ -1839,8 +1847,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -857
-      - 113
+      - -761
+      - 245
       viewers:
         generated_text:
           collapsed: false
@@ -1851,7 +1859,7 @@ nodes:
           width: 175
     params:
       common:
-        autotrigger: false
+        autotrigger: true
         max_frequency: 0.1
       text_generation:
         api_key: openai.key
@@ -1904,7 +1912,7 @@ nodes:
           width: 175
     params:
       Control:
-        database_path: index_500words_clip-vit-base-patch32.pkl
+        database_path: index_500words_2_clip-vit-base-patch32.pkl
         top_n: 9
       common:
         autotrigger: false
@@ -1933,7 +1941,7 @@ nodes:
           width: 175
     params:
       Control:
-        database_path: index_500words_clip-vit-base-patch32.pkl
+        database_path: index_500words_2_clip-vit-base-patch32.pkl
         top_n: 5
       common:
         autotrigger: false
@@ -1943,8 +1951,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -745
-      - 664
+      - -740
+      - 669
       viewers:
         frame:
           collapsed: false
@@ -2011,3 +2019,18 @@ nodes:
         biased_std: false
         outlier_stds: 4.0
         reset: true
+  writecsv0:
+    _type: WriteCsv
+    category: outputs
+    gui_kwargs:
+      pos:
+      - 3106
+      - 984
+      viewers: {}
+    params:
+      Write:
+        filename: mockup_mocna.csv
+        write: false
+      common:
+        autotrigger: false
+        max_frequency: 30.0
