@@ -1,0 +1,47 @@
+links:
+- node_in: oscout0
+  node_out: replay0
+  slot_in: data
+  slot_out: table_output
+nodes:
+  oscout0:
+    _type: OSCOut
+    category: outputs
+    gui_kwargs:
+      pos:
+      - 509
+      - 277
+      viewers: {}
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      osc:
+        address: localhost
+        broadcast: false
+        bundle: false
+        port: 8000
+        prefix: /goofi
+  replay0:
+    _type: Replay
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 74
+      - 112
+      viewers:
+        table_output:
+          collapsed: false
+          height: 330
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 405
+    params:
+      Read:
+        filename: mocna_example.csv
+        play: true
+        restart: true
+      common:
+        autotrigger: true
+        max_frequency: 10.0

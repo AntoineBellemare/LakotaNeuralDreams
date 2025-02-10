@@ -487,8 +487,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 269
-      - 2352
+      - -774
+      - 2436
       viewers:
         out:
           collapsed: false
@@ -673,8 +673,8 @@ nodes:
     category: signal
     gui_kwargs:
       pos:
-      - 263
-      - 2090
+      - -779
+      - 2226
       viewers:
         headset_status:
           collapsed: false
@@ -734,7 +734,7 @@ nodes:
         autotrigger: false
         max_frequency: 30.0
       embedding:
-        device: cpu
+        device: cuda
         model: openai/clip-vit-base-patch32
         split_by_comma: false
   extendedtable0:
@@ -846,8 +846,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 747
-      - 924
+      - 683
+      - 861
       viewers:
         out:
           collapsed: false
@@ -859,7 +859,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 5.0
+        max_frequency: 2.0
       join:
         axis: 0
         method: concatenate
@@ -961,8 +961,8 @@ nodes:
           width: 175
     params:
       common:
-        autotrigger: false
-        max_frequency: 1.0
+        autotrigger: true
+        max_frequency: 0.1
       file:
         filename: clip32_mean_embeddings2.csv
         freq_multiplier: 1.0
@@ -989,7 +989,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 30.0
+        max_frequency: 10.0
       lsl_stream:
         refresh: false
         source_name: muse
@@ -1168,8 +1168,8 @@ nodes:
     category: outputs
     gui_kwargs:
       pos:
-      - 3115
-      - 869
+      - 3227
+      - 815
       viewers: {}
     params:
       common:
@@ -1186,8 +1186,8 @@ nodes:
     category: outputs
     gui_kwargs:
       pos:
-      - 740
-      - 2225
+      - -288
+      - 2478
       viewers: {}
     params:
       common:
@@ -1713,8 +1713,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 510
-      - 2134
+      - -529
+      - 2313
       viewers:
         table:
           collapsed: false
@@ -1821,7 +1821,7 @@ nodes:
     gui_kwargs:
       pos:
       - 695
-      - 119
+      - 120
       viewers:
         generated_text:
           collapsed: false
@@ -1860,7 +1860,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 0.1
+        max_frequency: 0.2
       text_generation:
         api_key: openai.key
         keep_conversation: false
@@ -2024,12 +2024,12 @@ nodes:
     category: outputs
     gui_kwargs:
       pos:
-      - 3106
-      - 984
+      - 3192
+      - 896
       viewers: {}
     params:
       Write:
-        filename: mockup_mocna.csv
+        filename: mocna_example.csv
         write: false
       common:
         autotrigger: false
