@@ -1,11 +1,7 @@
 links:
-- node_in: oscout0
+- node_in: appendtables0
   node_out: appendtables2
-  slot_in: data
-  slot_out: output_table
-- node_in: writecsv0
-  node_out: appendtables2
-  slot_in: table_input
+  slot_in: table1
   slot_out: output_table
 - node_in: psd0
   node_out: buffer0
@@ -167,6 +163,10 @@ links:
   node_out: oscin0
   slot_in: input_table
   slot_out: message
+- node_in: tableselectarray1
+  node_out: oscin0
+  slot_in: input_table
+  slot_out: message
 - node_in: operation2
   node_out: powerbandeeg0
   slot_in: a
@@ -299,13 +299,13 @@ links:
   node_out: textgeneration0
   slot_in: string_input1
   slot_out: generated_text
-- node_in: embedding0
-  node_out: textgeneration1
-  slot_in: text
-  slot_out: generated_text
 - node_in: joinstring0
   node_out: textgeneration1
   slot_in: string1
+  slot_out: generated_text
+- node_in: embedding0
+  node_out: textgeneration1
+  slot_in: text
   slot_out: generated_text
 - node_in: select7
   node_out: transpose1
@@ -351,22 +351,65 @@ links:
   node_out: welfordsztransform1
   slot_in: array_input5
   slot_out: normalized
+- node_in: table1
+  node_out: tableselectarray1
+  slot_in: new_entry
+  slot_out: output_array
+- node_in: math0
+  node_out: tableselectarray1
+  slot_in: data
+  slot_out: output_array
+- node_in: oscout0
+  node_out: appendtables0
+  slot_in: data
+  slot_out: output_table
+- node_in: writecsv0
+  node_out: appendtables0
+  slot_in: table_input
+  slot_out: output_table
+- node_in: appendtables0
+  node_out: table1
+  slot_in: table2
+  slot_out: table
+- node_in: switch1
+  node_out: math0
+  slot_in: selector
+  slot_out: out
 nodes:
+  appendtables0:
+    _type: AppendTables
+    category: misc
+    gui_kwargs:
+      pos:
+      - 2901
+      - 759
+      viewers:
+        output_table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
   appendtables2:
     _type: AppendTables
     category: misc
     gui_kwargs:
       pos:
-      - 2852
-      - 742
+      - 2848
+      - 519
       viewers:
         output_table:
           collapsed: false
-          height: 140
+          height: 100
           log_scale_x: false
           log_scale_y: false
           viewer_idx: 0
-          width: 215
+          width: 175
     params:
       common:
         autotrigger: false
@@ -504,7 +547,7 @@ nodes:
       constant:
         graph: none
         shape: '1'
-        value: 2.0
+        value: 0.0
   constantarray2:
     _type: ConstantArray
     category: inputs
@@ -742,8 +785,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 2618
-      - 620
+      - 2625
+      - 607
       viewers:
         table:
           collapsed: false
@@ -763,7 +806,7 @@ nodes:
         param3: distance
         param4: hypnagogia
         param5: complexity
-        param6: value6
+        param6: ''
         param7: value7
         param8: value8
         param9: value9
@@ -777,11 +820,11 @@ nodes:
       viewers:
         table:
           collapsed: false
-          height: 100
+          height: 110
           log_scale_x: false
           log_scale_y: false
           viewer_idx: 0
-          width: 175
+          width: 185
     params:
       common:
         autotrigger: false
@@ -795,7 +838,7 @@ nodes:
         param5: rt_coord_brain
         param6: txt_prompt
         param7: lakota_prompt
-        param8: value8
+        param8: ''
         param9: value9
   join0:
     _type: Join
@@ -994,6 +1037,37 @@ nodes:
         refresh: false
         source_name: muse
         stream_name: ''
+  math0:
+    _type: Math
+    category: array
+    gui_kwargs:
+      pos:
+      - 2037
+      - -21
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      map:
+        input_max: 1.0
+        input_min: 0.0
+        output_max: 1.0
+        output_min: 0.0
+      math:
+        multiply: 2.0
+        post_add: 0.0
+        pre_add: 0.0
+        round: -1
+        sqrt: false
+        squared: false
   operation0:
     _type: Operation
     category: array
@@ -1146,8 +1220,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -1301
-      - 500
+      - -1419
+      - 514
       viewers:
         message:
           collapsed: false
@@ -1708,6 +1782,34 @@ nodes:
         max_frequency: 30.0
       settings:
         mode: array
+  switch1:
+    _type: Switch
+    category: misc
+    gui_kwargs:
+      pos:
+      - 2263
+      - -27
+      viewers:
+        array_out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+        string_out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      settings:
+        mode: array
   table0:
     _type: Table
     category: inputs
@@ -1729,13 +1831,34 @@ nodes:
         max_frequency: 30.0
       table:
         new_entry_key: eeg_status
+  table1:
+    _type: Table
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 2837
+      - 281
+      viewers:
+        table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      table:
+        new_entry_key: default_mode
   tableselectarray0:
     _type: TableSelectArray
     category: misc
     gui_kwargs:
       pos:
-      - -1054
-      - 709
+      - -1095
+      - 693
       viewers:
         output_array:
           collapsed: false
@@ -1750,13 +1873,34 @@ nodes:
         max_frequency: 30.0
       selection:
         key: /current_state
+  tableselectarray1:
+    _type: TableSelectArray
+    category: misc
+    gui_kwargs:
+      pos:
+      - -1241
+      - 251
+      viewers:
+        output_array:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      selection:
+        key: /default_mode
   tableselectstring1:
     _type: TableSelectString
     category: misc
     gui_kwargs:
       pos:
-      - -1057
-      - 500
+      - -1093
+      - 491
       viewers:
         output_string:
           collapsed: false
@@ -2024,8 +2168,8 @@ nodes:
     category: outputs
     gui_kwargs:
       pos:
-      - 3192
-      - 896
+      - 3229
+      - 893
       viewers: {}
     params:
       Write:

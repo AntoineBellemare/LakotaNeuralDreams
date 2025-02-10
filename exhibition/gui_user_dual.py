@@ -14,7 +14,8 @@ class LatentDreamscapeGUI:
         self.root.title("Latent Dreamscape GUI")
         self.root.geometry("600x500")
         self.last_activity_time = time.time()
-        self.mode = "text"
+        self.current_eeg_status = 0  # Default to disconnected
+
 
         # OSC Setup using oscpy
         self.send_port = 9000  # Matches GoofyPipe's OSCIn node
@@ -413,12 +414,15 @@ class LatentDreamscapeGUI:
         try:
             value = int(status)
             if 0 <= value <= 2:  # Ensure the value is within the expected range
+                self.current_eeg_status = value  # Store current EEG status
                 self.root.after(0, self.update_eeg_status, value)  # Schedule GUI update in main thread
             else:
                 print(f"Unexpected EEG status value: {value}")
         except ValueError:
             print("Invalid EEG status received.")
+            self.current_eeg_status = 0
             self.root.after(0, self.update_eeg_status, 0)
+
 
 
             
@@ -439,19 +443,28 @@ class LatentDreamscapeGUI:
 
     def check_inactivity(self):
         """Check for user inactivity and send OSC updates for default mode."""
-        if time.time() - self.last_activity_time > 10:  # 5 minutes
-            # Criteria met: send True
-            self.client.send_message(b"/default_mode", [b"True"])
-            print("Default Mode Triggered: True sent.")
-        else:
-            # Send False every second if criteria not met
-            self.client.send_message(b"/default_mode", [b"False"])
-            print("Default Mode Active: False sent.")
-            self.send_state()
+        inactivity_time = time.time() - self.last_activity_time
+        text_present = bool(self.text_entry.get("1.0", tk.END).strip())  # Check if text exists
+        drawing_present = bool(self.action_stack)  # Check if any drawing actions exist
+        eeg_disconnected = self.current_eeg_status == 0  # Assuming 0 means disconnected
 
+        # Determine if default mode should be active
+        default_mode_active = 0.0  # Default to 0 (False)
 
-        # Check inactivity again after 1 second
+        if not text_present and not drawing_present and eeg_disconnected:
+            default_mode_active = 1.0  # No input + EEG disconnected
+
+        elif inactivity_time > 180 and eeg_disconnected:
+            default_mode_active = 1.0  # 3 minutes of inactivity + EEG disconnected
+
+        # Send OSC message
+        self.client.send_message(b"/default_mode", [default_mode_active])  
+        print(f"Default Mode State Sent: {default_mode_active}")
+
+        # Schedule the next inactivity check
         self.root.after(1000, self.check_inactivity)
+
+
 
     def run(self):
         """Run the main GUI loop."""
