@@ -1,4 +1,12 @@
 links:
+- node_in: oscout0
+  node_out: appendtables0
+  slot_in: data
+  slot_out: output_table
+- node_in: writecsv0
+  node_out: appendtables0
+  slot_in: table_input
+  slot_out: output_table
 - node_in: appendtables0
   node_out: appendtables2
   slot_in: table1
@@ -131,6 +139,10 @@ links:
   node_out: lslclient1
   slot_in: data
   slot_out: out
+- node_in: switch1
+  node_out: math0
+  slot_in: selector
+  slot_out: out
 - node_in: switch0
   node_out: operation1
   slot_in: array3
@@ -164,6 +176,10 @@ links:
   slot_in: input_table
   slot_out: message
 - node_in: tableselectarray1
+  node_out: oscin0
+  slot_in: input_table
+  slot_out: message
+- node_in: tableselectarray2
   node_out: oscin0
   slot_in: input_table
   slot_out: message
@@ -287,6 +303,14 @@ links:
   node_out: table0
   slot_in: data
   slot_out: table
+- node_in: math0
+  node_out: tableselectarray1
+  slot_in: data
+  slot_out: output_array
+- node_in: extendedtable2
+  node_out: tableselectarray1
+  slot_in: array_input1
+  slot_out: output_array
 - node_in: joinstring0
   node_out: tabletostring0
   slot_in: string2
@@ -351,30 +375,14 @@ links:
   node_out: welfordsztransform1
   slot_in: array_input5
   slot_out: normalized
-- node_in: table1
-  node_out: tableselectarray1
-  slot_in: new_entry
+- node_in: extendedtable2
+  node_out: tableselectarray2
+  slot_in: array_input2
   slot_out: output_array
-- node_in: math0
-  node_out: tableselectarray1
-  slot_in: data
-  slot_out: output_array
-- node_in: oscout0
-  node_out: appendtables0
-  slot_in: data
-  slot_out: output_table
-- node_in: writecsv0
-  node_out: appendtables0
-  slot_in: table_input
-  slot_out: output_table
 - node_in: appendtables0
-  node_out: table1
+  node_out: extendedtable2
   slot_in: table2
   slot_out: table
-- node_in: switch1
-  node_out: math0
-  slot_in: selector
-  slot_out: out
 nodes:
   appendtables0:
     _type: AppendTables
@@ -839,6 +847,36 @@ nodes:
         param6: txt_prompt
         param7: lakota_prompt
         param8: ''
+        param9: value9
+  extendedtable2:
+    _type: ExtendedTable
+    category: inputs
+    gui_kwargs:
+      pos:
+      - 2733
+      - 99
+      viewers:
+        table:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      table:
+        param1: default_mode
+        param10: value10
+        param2: collective_dream
+        param3: value3
+        param4: value4
+        param5: value5
+        param6: value6
+        param7: value7
+        param8: value8
         param9: value9
   join0:
     _type: Join
@@ -1831,27 +1869,6 @@ nodes:
         max_frequency: 30.0
       table:
         new_entry_key: eeg_status
-  table1:
-    _type: Table
-    category: inputs
-    gui_kwargs:
-      pos:
-      - 2837
-      - 281
-      viewers:
-        table:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-      table:
-        new_entry_key: default_mode
   tableselectarray0:
     _type: TableSelectArray
     category: misc
@@ -1894,6 +1911,27 @@ nodes:
         max_frequency: 30.0
       selection:
         key: /default_mode
+  tableselectarray2:
+    _type: TableSelectArray
+    category: misc
+    gui_kwargs:
+      pos:
+      - -1244
+      - 10
+      viewers:
+        output_array:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      selection:
+        key: /collective_dream
   tableselectstring1:
     _type: TableSelectString
     category: misc

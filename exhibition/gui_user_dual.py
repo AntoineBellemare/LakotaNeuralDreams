@@ -109,6 +109,30 @@ class LatentDreamscapeGUI:
         red_label = tk.Label(self.eeg_legend_frame, text="Disconnected", font=("Courier", 10), bg="#f0f0f0")
         red_label.grid(row=2, column=1, sticky="w")
 
+        # Load dreamy border texture
+        try:
+            border_img = Image.open("dreamy_texture.png")  # Ensure correct path
+            border_img = border_img.resize((210, 60), Image.Resampling.LANCZOS)  # Slightly larger for border effect
+            self.border_image = ImageTk.PhotoImage(border_img)
+        except Exception as e:
+            print(f"Error loading border image: {e}")
+            self.border_image = None  # Fallback if image doesn't load
+
+        # Load button background image (optional) or use a solid color
+        self.button_bg_color = "#d9d9d9"  # Light gray, or change as needed
+
+        # Create a frame with the texture as background
+        self.button_frame = tk.Label(self.text_frame, image=self.border_image, bg="#f0f0f0")
+        self.button_frame.pack(pady=10)
+
+        # Contribute to the Collective Dream Button (inside the frame)
+        self.contribute_button = tk.Button(
+            self.button_frame, text="Contribute to the\nCollective Dream",
+            font=("Courier", 12, "bold"), fg="black", justify="center",
+            command=self.toggle_collective_dream, relief="raised",
+            bg=self.button_bg_color, width=25, height=2  # Ensuring readable text
+        )
+        self.contribute_button.pack(padx=5, pady=5)  # Padding to reveal the border
 
 
         # Drawing Frame on the right
@@ -424,6 +448,42 @@ class LatentDreamscapeGUI:
             self.root.after(0, self.update_eeg_status, 0)
 
 
+    def toggle_collective_dream(self):
+        """Toggle the collective dream state, send OSC messages, and open a disclaimer window."""
+        if self.contribute_button.config('relief')[-1] == 'raised':
+            self.contribute_button.config(relief="sunken")
+            self.client.send_message(b"/collective_dream", [1])  # Send OSC message
+            print("Collective Dream: ON")
+            self.show_disclaimer()  # Show disclaimer window
+        else:
+            self.contribute_button.config(relief="raised")
+            self.client.send_message(b"/collective_dream", [0])  # Send OSC message
+            print("Collective Dream: OFF")
+
+    def show_disclaimer(self):
+        """Display a disclaimer window about data privacy."""
+        disclaimer_window = tk.Toplevel(self.root)
+        disclaimer_window.title("Data Privacy Notice")
+        disclaimer_window.geometry("400x200")
+        disclaimer_window.configure(bg="#f0f0f0")
+
+        message = (
+            "⚠️ Important Notice ⚠️\n\n"
+            "No data will be preserved.\n"
+            "No raw EEG data is recorded.\n\n"
+            "Your participation remains anonymous."
+        )
+
+        label = tk.Label(disclaimer_window, text=message, font=("Courier", 12), bg="#f0f0f0", justify="center")
+        label.pack(pady=20)
+
+        close_button = tk.Button(disclaimer_window, text="OK", command=disclaimer_window.destroy, font=("Courier", 12))
+        close_button.pack(pady=10)
+
+        # Ensure the window stays on top
+        disclaimer_window.transient(self.root)
+        disclaimer_window.grab_set()
+        self.root.wait_window(disclaimer_window)  # Pause interaction with the main window
 
             
     def undo_last_action(self):
