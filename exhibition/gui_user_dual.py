@@ -10,6 +10,11 @@ from PIL import Image, ImageTk
 
 class LatentDreamscapeGUI:
     def __init__(self):
+        self.color_palette = [
+            "#000000", "#FFFFFF", "#FF0000", "#00FF00", "#0000FF",
+            "#FFFF00", "#FF00FF", "#00FFFF", "#808080", "#FFA500"
+        ]
+
         self.root = tk.Tk()
         self.root.title("Latent Dreamscape GUI")
         self.root.geometry("600x500")
@@ -152,9 +157,16 @@ class LatentDreamscapeGUI:
         pen_size_menu.config(font=("Courier", 12))
         pen_size_menu.pack(side="left", padx=5)
 
-        # Color Picker Button
-        self.color_button = tk.Button(self.button_panel, text="Choose Color", command=self.choose_color, font=("Courier", 12))
-        self.color_button.pack(side="left", padx=5)
+        # Color Picker Panel (Replacing the traditional color picker)
+        self.color_frame = tk.Frame(self.button_panel, bg="#f0f0f0")
+        self.color_frame.pack(side="left", padx=10)
+
+        # Create color selection buttons
+        for color in self.color_palette:
+            color_btn = tk.Button(self.color_frame, bg=color, width=2, height=1,
+                                command=lambda c=color: self.set_pen_color(c))
+            color_btn.pack(side="left", padx=2)
+
 
         # Eraser Button
         self.eraser_button = tk.Button(self.button_panel, text="Eraser", command=self.toggle_eraser, font=("Courier", 12))
@@ -249,6 +261,13 @@ class LatentDreamscapeGUI:
                     self.symbols[name] = ImageTk.PhotoImage(img)  # Load into Tkinter-compatible format
         except Exception as e:
             print(f"Error loading symbols: {e}")
+
+    def set_pen_color(self, color):
+        """Set the pen color from the predefined palette."""
+        self.pen_color = color
+        self.eraser_mode = False  # Disable eraser mode when choosing a new color
+        self.eraser_button.config(relief="raised")  # Reset eraser button state
+        print(f"Selected Pen Color: {color}")
 
                 
     def select_symbol(self, symbol_name):
