@@ -47,10 +47,6 @@ links:
   node_out: constantarray3
   slot_in: b
   slot_out: out
-- node_in: textgeneration1
-  node_out: constantstring1
-  slot_in: prompt
-  slot_out: out
 - node_in: joinstring1
   node_out: constantstring2
   slot_in: string1
@@ -99,6 +95,10 @@ links:
   node_out: extendedtable1
   slot_in: table2
   slot_out: table
+- node_in: appendtables0
+  node_out: extendedtable2
+  slot_in: table2
+  slot_out: table
 - node_in: reshape1
   node_out: join0
   slot_in: array
@@ -138,10 +138,6 @@ links:
 - node_in: select1
   node_out: lslclient1
   slot_in: data
-  slot_out: out
-- node_in: switch1
-  node_out: math0
-  slot_in: selector
   slot_out: out
 - node_in: switch0
   node_out: operation1
@@ -303,14 +299,26 @@ links:
   node_out: table0
   slot_in: data
   slot_out: table
-- node_in: math0
-  node_out: tableselectarray1
-  slot_in: data
+- node_in: extendedtable2
+  node_out: tableselectarray0
+  slot_in: array_input3
   slot_out: output_array
 - node_in: extendedtable2
   node_out: tableselectarray1
   slot_in: array_input1
   slot_out: output_array
+- node_in: extendedtable2
+  node_out: tableselectarray2
+  slot_in: array_input2
+  slot_out: output_array
+- node_in: embedding0
+  node_out: tableselectstring1
+  slot_in: text
+  slot_out: output_string
+- node_in: joinstring0
+  node_out: tableselectstring1
+  slot_in: string1
+  slot_out: output_string
 - node_in: joinstring0
   node_out: tabletostring0
   slot_in: string2
@@ -322,14 +330,6 @@ links:
 - node_in: extendedtable1
   node_out: textgeneration0
   slot_in: string_input1
-  slot_out: generated_text
-- node_in: joinstring0
-  node_out: textgeneration1
-  slot_in: string1
-  slot_out: generated_text
-- node_in: embedding0
-  node_out: textgeneration1
-  slot_in: text
   slot_out: generated_text
 - node_in: select7
   node_out: transpose1
@@ -375,14 +375,6 @@ links:
   node_out: welfordsztransform1
   slot_in: array_input5
   slot_out: normalized
-- node_in: extendedtable2
-  node_out: tableselectarray2
-  slot_in: array_input2
-  slot_out: output_array
-- node_in: appendtables0
-  node_out: extendedtable2
-  slot_in: table2
-  slot_out: table
 nodes:
   appendtables0:
     _type: AppendTables
@@ -394,11 +386,11 @@ nodes:
       viewers:
         output_table:
           collapsed: false
-          height: 100
+          height: 280
           log_scale_x: false
           log_scale_y: false
           viewer_idx: 0
-          width: 175
+          width: 355
     params:
       common:
         autotrigger: false
@@ -620,16 +612,16 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 30.0
+        max_frequency: 2.0
       constant:
-        value: in the four directions
+        value: the sound of the cry and the raini
   constantstring1:
     _type: ConstantString
     category: inputs
     gui_kwargs:
       pos:
-      - -981
-      - 245
+      - -1003
+      - 173
       viewers:
         out:
           collapsed: false
@@ -871,7 +863,7 @@ nodes:
         param1: default_mode
         param10: value10
         param2: collective_dream
-        param3: value3
+        param3: current_state
         param4: value4
         param5: value5
         param6: value6
@@ -949,8 +941,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - 125
-      - 122
+      - 146
+      - 109
       viewers:
         output:
           collapsed: false
@@ -1045,7 +1037,7 @@ nodes:
         autotrigger: true
         max_frequency: 0.1
       file:
-        filename: clip32_mean_embeddings2.csv
+        filename: clip32_mean_embeddings3.csv
         freq_multiplier: 1.0
         header: 0
         index_column: true
@@ -1070,42 +1062,11 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 10.0
+        max_frequency: 20.0
       lsl_stream:
         refresh: false
         source_name: muse
         stream_name: ''
-  math0:
-    _type: Math
-    category: array
-    gui_kwargs:
-      pos:
-      - 2037
-      - -21
-      viewers:
-        out:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-      map:
-        input_max: 1.0
-        input_min: 0.0
-        output_max: 1.0
-        output_min: 0.0
-      math:
-        multiply: 2.0
-        post_add: 0.0
-        pre_add: 0.0
-        round: -1
-        sqrt: false
-        squared: false
   operation0:
     _type: Operation
     category: array
@@ -1258,8 +1219,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -1419
-      - 514
+      - -1427
+      - 499
       viewers:
         message:
           collapsed: false
@@ -1280,8 +1241,8 @@ nodes:
     category: outputs
     gui_kwargs:
       pos:
-      - 3227
-      - 815
+      - 3336
+      - 864
       viewers: {}
     params:
       common:
@@ -1384,7 +1345,7 @@ nodes:
           width: 265
     params:
       Text_Generation:
-        selected_prompt: TXT2IMG_DREAM_PROMPT
+        selected_prompt: TXT2IMG_DREAM_PROMPT_UNUSUAL
       common:
         autotrigger: false
         max_frequency: 30.0
@@ -1820,34 +1781,6 @@ nodes:
         max_frequency: 30.0
       settings:
         mode: array
-  switch1:
-    _type: Switch
-    category: misc
-    gui_kwargs:
-      pos:
-      - 2263
-      - -27
-      viewers:
-        array_out:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-        string_out:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-      settings:
-        mode: array
   table0:
     _type: Table
     category: inputs
@@ -1874,8 +1807,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - -1095
-      - 693
+      - -1164
+      - 652
       viewers:
         output_array:
           collapsed: false
@@ -1895,8 +1828,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - -1241
-      - 251
+      - -1232
+      - 222
       viewers:
         output_array:
           collapsed: false
@@ -1916,8 +1849,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - -1244
-      - 10
+      - -1243
+      - 9
       viewers:
         output_array:
           collapsed: false
@@ -1937,8 +1870,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - -1093
-      - 491
+      - -1164
+      - 455
       viewers:
         output_string:
           collapsed: false
@@ -2003,7 +1936,7 @@ nodes:
     gui_kwargs:
       pos:
       - 695
-      - 120
+      - 109
       viewers:
         generated_text:
           collapsed: false
@@ -2019,18 +1952,18 @@ nodes:
       text_generation:
         api_key: openai.key
         keep_conversation: false
-        max_tokens: 100
+        max_tokens: 150
         model: gpt-4o-mini
         save_conversation: ''
         system_prompt: ''
-        temperature: 1.0
+        temperature: 1.3
   textgeneration1:
     _type: TextGeneration
     category: inputs
     gui_kwargs:
       pos:
-      - -761
-      - 245
+      - -771
+      - 162
       viewers:
         generated_text:
           collapsed: false
@@ -2046,11 +1979,11 @@ nodes:
       text_generation:
         api_key: openai.key
         keep_conversation: false
-        max_tokens: 20
+        max_tokens: 50
         model: gpt-4o-mini
         save_conversation: ''
         system_prompt: ''
-        temperature: 1.3
+        temperature: 1.5
   transpose1:
     _type: Transpose
     category: array
@@ -2149,10 +2082,10 @@ nodes:
         max_frequency: 2.0
       video_stream:
         capture_mode: screen
-        crop_bottom: 308
-        crop_left: 867
-        crop_right: 196
-        crop_top: 168
+        crop_bottom: 601
+        crop_left: 587
+        crop_right: 1049
+        crop_top: 406
         device_index: 1
         mirror: false
   welfordsztransform0:
@@ -2206,12 +2139,13 @@ nodes:
     category: outputs
     gui_kwargs:
       pos:
-      - 3229
-      - 893
+      - 3333
+      - 948
       viewers: {}
     params:
       Write:
         filename: mocna_example.csv
+        timestamps: false
         write: false
       common:
         autotrigger: false

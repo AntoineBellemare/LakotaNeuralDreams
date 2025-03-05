@@ -48,8 +48,12 @@ class LatentDreamscapeGUI:
         self.setup_gui()
         self.server.bind(b"/eeg_status", self.eeg_status_callback)
         self.check_inactivity()
+        self.send_state()
+        self.client.send_message(b"/text_input", [b""])  # Send an initial empty text
+        
 
     def setup_gui(self):
+
         """Setup the GUI layout with drawing mode menu for pen size and color."""
         # Configure root grid for centering
         self.root.grid_rowconfigure(0, weight=1)
@@ -58,31 +62,41 @@ class LatentDreamscapeGUI:
         self.root.grid_columnconfigure(0, weight=1)
 
         # Main container frame
-        self.main_frame = tk.Frame(self.root, bg="#f0f0f0")
+        self.main_frame = tk.Frame(self.root, bg="#2B2B2B")
         self.main_frame.pack(fill="both", expand=True)
 
         # Text Frame on the left
-        self.text_frame = tk.Frame(self.main_frame, bg="#f0f0f0", width=250, height=200)
+        self.text_frame = tk.Frame(self.main_frame, bg="#2B2B2B", width=250, height=200)
         self.text_frame.pack(side="left", fill="y", padx=20)  # Add padding on the left
 
-        self.text_label = tk.Label(self.text_frame, text="Write your dream:", font=("Courier", 14), bg="#f0f0f0")
+        self.text_label = tk.Label(self.text_frame, text="Write your dream:", font=("Courier", 14), bg="#2B2B2B", fg="#F5F5F5")
         self.text_label.pack(pady=5)
         self.text_entry = tk.Text(self.text_frame, width=40, height=20, wrap="word",
                                 relief="solid", bd=2, font=("Courier", 12))
         self.text_entry.bind("<Key>", lambda event: self.schedule_text_send())
         self.text_entry.pack(pady=(20, 5))  # Reduce top padding to move it up
-        self.send_button = tk.Button(self.text_frame, text="Send", command=self.send_text, font=("Courier", 12))
-        self.send_button.pack(pady=5)
+        # Frame to hold Send and Clear buttons side by side
+        self.text_button_frame = tk.Frame(self.text_frame, bg="#2B2B2B")
+        self.text_button_frame.pack(pady=5)
+
+        # Send Button
+        self.send_button = tk.Button(self.text_button_frame, text="Send", command=self.send_text, font=("Courier", 12))
+        self.send_button.pack(side="left", padx=5)
+
+        # Clear Button
+        self.clear_text_button = tk.Button(self.text_button_frame, text="Clear", command=self.clear_text, font=("Courier", 12))
+        self.clear_text_button.pack(side="left", padx=5)
+
 
         # EEG Status Section (Added below the text box)
-        self.eeg_frame = tk.Frame(self.text_frame, bg="#f0f0f0")
+        self.eeg_frame = tk.Frame(self.text_frame, bg="#2B2B2B")
         self.eeg_frame.pack(pady=(5, 0), fill="x", padx=10, anchor="w")  # Align left, move up
 
-        self.eeg_label = tk.Label(self.eeg_frame, text="EEG Status", font=("Courier", 14), bg="#f0f0f0")
+        self.eeg_label = tk.Label(self.eeg_frame, text="EEG Status", font=("Courier", 14), bg="#2B2B2B", fg="#F5F5F5")
         self.eeg_label.pack(anchor="w")  # Align left
 
         # Container for EEG status light and legend
-        self.eeg_status_container = tk.Frame(self.eeg_frame, bg="#f0f0f0")
+        self.eeg_status_container = tk.Frame(self.eeg_frame, bg="#2B2B2B")
         self.eeg_status_container.pack(fill="x", padx=5, pady=5)
 
         # EEG Status Light
@@ -115,36 +129,36 @@ class LatentDreamscapeGUI:
         red_label.grid(row=2, column=1, sticky="w")
 
         # Load dreamy border texture
-        try:
-            border_img = Image.open("dreamy_texture.png")  # Ensure correct path
-            border_img = border_img.resize((210, 60), Image.Resampling.LANCZOS)  # Slightly larger for border effect
-            self.border_image = ImageTk.PhotoImage(border_img)
-        except Exception as e:
-            print(f"Error loading border image: {e}")
-            self.border_image = None  # Fallback if image doesn't load
+        # try:
+        #     border_img = Image.open("background.png")  # Ensure correct path
+        #     border_img = border_img.resize((210, 60), Image.Resampling.LANCZOS)  # Slightly larger for border effect
+        #     self.border_image = ImageTk.PhotoImage(border_img)
+        # except Exception as e:
+        #     print(f"Error loading border image: {e}")
+        self.border_image = None  # Fallback if image doesn't load
 
         # Load button background image (optional) or use a solid color
         self.button_bg_color = "#d9d9d9"  # Light gray, or change as needed
 
         # Create a frame with the texture as background
-        self.button_frame = tk.Label(self.text_frame, image=self.border_image, bg="#f0f0f0")
+        self.button_frame = tk.Label(self.text_frame, image=self.border_image, bg="#2B2B2B")
         self.button_frame.pack(pady=10)
 
         # Contribute to the Collective Dream Button (inside the frame)
         self.contribute_button = tk.Button(
             self.button_frame, text="Contribute to the\nCollective Dream",
             font=("Courier", 12, "bold"), fg="black", justify="center",
-            command=self.toggle_collective_dream, relief="raised",
+            command=self.send_collective_dream_signal, relief="raised",
             bg=self.button_bg_color, width=25, height=2  # Ensuring readable text
         )
         self.contribute_button.pack(padx=5, pady=5)  # Padding to reveal the border
 
 
         # Drawing Frame on the right
-        self.drawing_frame = tk.Frame(self.main_frame, bg="#f0f0f0")
+        self.drawing_frame = tk.Frame(self.main_frame, bg="#2B2B2B")
         self.drawing_frame.pack(side="right", fill="both", expand=True, padx=(20, 20))
 
-        self.drawing_label = tk.Label(self.drawing_frame, text="Draw your dream:", font=("Courier", 14), bg="#f0f0f0")
+        self.drawing_label = tk.Label(self.drawing_frame, text="Draw your dream:", font=("Courier", 14), bg="#2B2B2B", fg="#F5F5F5")
         self.drawing_label.pack(pady=5)
 
         # Button Panel (Top row for tools)
@@ -180,7 +194,7 @@ class LatentDreamscapeGUI:
         self.canvas.bind("<ButtonRelease-1>", self.reset_last_position)
 
         # Clear Button Panel (Bottom row for actions)
-        self.clear_panel = tk.Frame(self.drawing_frame, bg="#f0f0f0")
+        self.clear_panel = tk.Frame(self.drawing_frame, bg="#2B2B2B")
         self.clear_panel.pack(pady=5)
 
         # Clear Button
@@ -188,13 +202,13 @@ class LatentDreamscapeGUI:
         self.clear_button.pack(side="left", padx=5)
 
         # Symbol Size Slider
-        tk.Label(self.clear_panel, text="Symbol Size:", font=("Courier", 12), bg="#f0f0f0").pack(side="left", padx=5)
+        tk.Label(self.clear_panel, text="Symbol Size:", font=("Courier", 12), bg="#2B2B2B", fg="#F5F5F5").pack(side="left", padx=5)
         self.symbol_size = tk.IntVar(value=50)  # Default size
-        size_slider = tk.Scale(self.clear_panel, from_=20, to=200, orient="horizontal", variable=self.symbol_size)
+        size_slider = tk.Scale(self.clear_panel, from_=20, to=200, orient="horizontal", variable=self.symbol_size, bg="#2B2B2B", fg="#F5F5F5")
         size_slider.pack(side="left", padx=5)
 
         # Rotation Angle Selector
-        tk.Label(self.clear_panel, text="Rotation Angle:", font=("Courier", 12), bg="#f0f0f0").pack(side="left", padx=5)
+        tk.Label(self.clear_panel, text="Rotation Angle:", font=("Courier", 12), bg="#2B2B2B", fg="#F5F5F5").pack(side="left", padx=5)
         self.rotation_angle = tk.IntVar(value=0)  # Default angle is 0
         rotation_menu = tk.OptionMenu(self.clear_panel, self.rotation_angle, 0, 45, 90, 135, 180, 225, 270, 315)
         rotation_menu.config(font=("Courier", 12))
@@ -213,14 +227,14 @@ class LatentDreamscapeGUI:
 
         
         # Symbol Panel (Centering the icons)
-        self.symbol_panel = tk.Frame(self.drawing_frame, bg="#f0f0f0")
+        self.symbol_panel = tk.Frame(self.drawing_frame, bg="#2B2B2B")
         self.symbol_panel.pack(side="top", fill="x", padx=10)
 
         # Center title label
-        tk.Label(self.symbol_panel, text="Symbols:", font=("Courier", 12), bg="#f0f0f0").pack(pady=5)
+        tk.Label(self.symbol_panel, text="Symbols:", font=("Courier", 12), bg="#2B2B2B", fg="#F5F5F5").pack(pady=5)
 
         # Symbol container with centering
-        symbol_container = tk.Frame(self.symbol_panel, bg="#f0f0f0")
+        symbol_container = tk.Frame(self.symbol_panel, bg="#2B2B2B")
         symbol_container.pack(anchor="center")  # Center the frame containing the icons
 
         # Keep references to avoid garbage collection
@@ -231,8 +245,10 @@ class LatentDreamscapeGUI:
         for idx, (name, img) in enumerate(self.symbols.items()):
             self.symbol_images.append(img)  # Keep reference to avoid garbage collection
             symbol_button = tk.Button(
-                symbol_container, image=img, command=partial(self.select_symbol, name), relief="flat", bd=1
+                symbol_container, image=img, command=partial(self.select_symbol, name),
+                relief="flat", bd=1, bg="#2B2B2B", activebackground="#2B2B2B", highlightthickness=0, compound="center"
             )
+
             row = idx // columns
             col = idx % columns
             symbol_button.grid(row=row, column=col, padx=5, pady=5)
@@ -246,9 +262,22 @@ class LatentDreamscapeGUI:
         self.undo_button.pack(side="left", padx=5)
 
 
+    
+    def resize_background(self, event):
+        """Resize and reposition the background image to fit the window."""
+        if self.bg_image:
+            new_width = event.width
+            new_height = event.height
+            resized_img = Image.open("background.png").resize((new_width, new_height), Image.Resampling.LANCZOS)
+            self.bg_image = ImageTk.PhotoImage(resized_img)
+
+            # Update canvas background
+            self.bg_canvas.delete("bg_image")  # Remove previous image
+            self.bg_canvas.create_image(0, 0, image=self.bg_image, anchor="nw", tags="bg_image")
+
     def load_symbols(self, folder):
         """Load all symbols (images) from the given folder into a dictionary."""
-        from PIL import Image, ImageTk  # Ensure PIL is available for image handling
+        from PIL import Image, ImageTk, ImageOps  # Ensure PIL is available for image handling
         self.symbols = {}  # Dictionary to store loaded symbols
         supported_formats = (".jpg", ".jpeg", ".png")
 
@@ -258,6 +287,12 @@ class LatentDreamscapeGUI:
                     path = os.path.join(folder, file)
                     name = os.path.splitext(file)[0]
                     img = Image.open(path).resize((50, 50), Image.Resampling.LANCZOS)  # Resize to thumbnail
+                    # take the negative of the image
+                    img = img.convert("RGBA")  # Ensure it has an alpha channel
+                    r, g, b, a = img.split()  # Split channels
+                    rgb_inverted = ImageOps.invert(Image.merge("RGB", (r, g, b)))  # Invert only RGB
+                    img = Image.merge("RGBA", (rgb_inverted.split()[0], rgb_inverted.split()[1], rgb_inverted.split()[2], a))  # Merge back with original alpha
+
                     self.symbols[name] = ImageTk.PhotoImage(img)  # Load into Tkinter-compatible format
         except Exception as e:
             print(f"Error loading symbols: {e}")
@@ -303,13 +338,14 @@ class LatentDreamscapeGUI:
             # Drawing behavior
             self.draw(event)
 
+    
     def place_symbol_release(self, event):
-        """Fix the symbol in place or finalize drawing."""
+        """Fix the symbol in place and then focus on the text entry."""
         if hasattr(self, 'temp_symbol'):
             symbol_size = self.symbol_size.get()
             rotation_angle = self.rotation_angle.get()
             img_path = os.path.join("../dream_language_symbols/no_bg_square", f"{self.selected_symbol}.png")
-            
+
             try:
                 img = Image.open(img_path).resize((symbol_size, symbol_size), Image.Resampling.LANCZOS)
                 rotated_img = img.rotate(rotation_angle, expand=True)  # Apply rotation
@@ -329,10 +365,12 @@ class LatentDreamscapeGUI:
                 print(f"Symbol '{self.selected_symbol}' placed permanently at ({event.x}, {event.y}) with rotation {rotation_angle}°")
                 self.selected_symbol = None  # Reset symbol selection
                 print("Switched back to drawing mode.")
+                
+                self.text_entry.focus_set()  # Automatically focus on text entry after placing a symbol
+                
             except Exception as e:
                 print(f"Error placing symbol: {e}")
         else:
-            # Finalize drawing
             self.reset_last_position(event)
 
     def toggle_eraser(self):
@@ -375,11 +413,12 @@ class LatentDreamscapeGUI:
 
 
     def reset_last_position(self, event):
-        """Reset the last position when the mouse is released or pressed."""
+        """Reset the last position when the mouse is released or pressed, then focus on text entry."""
         if self.current_drawn_lines:  # If there are lines in the current draw action
             self.action_stack.append(self.current_drawn_lines)  # Add the group of lines to the action stack
             self.current_drawn_lines = []  # Reset the temporary list
         self.last_x, self.last_y = None, None
+        self.text_entry.focus_set()  # Automatically focus on text entry after drawing
 
 
 
@@ -392,14 +431,22 @@ class LatentDreamscapeGUI:
 
 
     def send_text(self):
-        """Send text input via OSC with green feedback."""
+        """Send text input via OSC without changing text boldness."""
         text = self.text_entry.get("1.0", tk.END).strip()
         if text:
             self.client.send_message(b"/text_input", [text.encode()])
-            self.text_entry.config(highlightbackground="green", highlightthickness=2)
-            self.root.after(1000, lambda: self.text_entry.config(highlightthickness=0))
+            
+            # Temporarily change text background to indicate it was sent
+            self.text_entry.config(fg="green")
+            self.root.after(1000, lambda: self.text_entry.config(fg="black"))  # Reset color
+
         self.last_activity_time = time.time()
         self.send_state()
+
+    def clear_text(self):
+        """Clear the text entry box."""
+        self.text_entry.delete("1.0", tk.END)
+
 
     def schedule_text_send(self):
         """Schedule sending text after 1 second of inactivity."""
@@ -467,29 +514,46 @@ class LatentDreamscapeGUI:
             self.root.after(0, self.update_eeg_status, 0)
 
 
-    def toggle_collective_dream(self):
-        """Toggle the collective dream state, send OSC messages, and open a disclaimer window."""
-        if self.contribute_button.config('relief')[-1] == 'raised':
-            self.contribute_button.config(relief="sunken")
-            self.client.send_message(b"/collective_dream", [1])  # Send OSC message
-            print("Collective Dream: ON")
-            self.show_disclaimer()  # Show disclaimer window
-        else:
-            self.contribute_button.config(relief="raised")
-            self.client.send_message(b"/collective_dream", [0])  # Send OSC message
-            print("Collective Dream: OFF")
+    def send_collective_dream_signal(self):
+        """Send an OSC message with value 1 for 10 seconds, then reset to 0."""
+        
+        # Show the disclaimer window
+        self.show_disclaimer()
+
+        # Send the first OSC message (1)
+        self.client.send_message(b"/collective_dream", [1])
+        print("Collective Dream: Activated")
+
+        # Change button appearance to indicate activation
+        self.contribute_button.config(bg="lightgray", state="disabled")  
+
+        # After 10 seconds, reset back to 0
+        self.root.after(10000, self.reset_collective_dream)
+
+            
+    def reset_collective_dream(self):
+        """Reset the collective dream state to 0 after 10 seconds."""
+        
+        # Send the second OSC message (0)
+        self.client.send_message(b"/collective_dream", [0])
+        print("Collective Dream: Deactivated")
+
+        # Restore button appearance
+        self.contribute_button.config(bg=self.button_bg_color, state="normal")
+
 
     def show_disclaimer(self):
         """Display a disclaimer window about data privacy."""
         disclaimer_window = tk.Toplevel(self.root)
         disclaimer_window.title("Data Privacy Notice")
-        disclaimer_window.geometry("400x200")
+        disclaimer_window.geometry("520x240")
         disclaimer_window.configure(bg="#f0f0f0")
 
         message = (
             "⚠️ Important Notice ⚠️\n\n"
-            "No data will be preserved.\n"
-            "No raw EEG data is recorded.\n\n"
+            "The content of the dream that is collected remains\n"
+            "for visualization purposes of the collective dream.\n\n"
+            "No raw EEG data is recorded.\n"
             "Your participation remains anonymous."
         )
 
