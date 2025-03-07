@@ -1369,12 +1369,13 @@ nodes:
         autotrigger: false
         max_frequency: 30.0
       psd:
+        axis: -1
         f_max: 60.0
         f_min: 1.0
         method: welch
-        noverlap: 0
-        precision: 0.1
-        smooth_welch: 1
+      welch:
+        noverlap: -1
+        nperseg: -1
   randomarray1:
     _type: RandomArray
     category: inputs
@@ -1614,6 +1615,7 @@ nodes:
       select:
         axis: 1
         exclude: ''
+        expand_asterisk: false
         include: '-1'
   select1:
     _type: Select
@@ -1637,6 +1639,7 @@ nodes:
       select:
         axis: 0
         exclude: Right AUX
+        expand_asterisk: false
         include: ''
   select4:
     _type: Select
@@ -1660,6 +1663,7 @@ nodes:
       select:
         axis: 0
         exclude: ''
+        expand_asterisk: false
         include: '0'
   select5:
     _type: Select
@@ -1683,6 +1687,7 @@ nodes:
       select:
         axis: 0
         exclude: ''
+        expand_asterisk: false
         include: '1'
   select6:
     _type: Select
@@ -1706,6 +1711,7 @@ nodes:
       select:
         axis: 0
         exclude: ''
+        expand_asterisk: false
         include: '2'
   select7:
     _type: Select
@@ -1729,6 +1735,7 @@ nodes:
       select:
         axis: 1
         exclude: ''
+        expand_asterisk: false
         include: '-2'
   select8:
     _type: Select
@@ -1752,6 +1759,7 @@ nodes:
       select:
         axis: 1
         exclude: ''
+        expand_asterisk: false
         include: :-2
   switch0:
     _type: Switch
@@ -1935,8 +1943,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 695
-      - 109
+      - 745
+      - 99
       viewers:
         generated_text:
           collapsed: false
