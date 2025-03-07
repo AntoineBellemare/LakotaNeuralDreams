@@ -31,10 +31,6 @@ links:
   node_out: compass0
   slot_in: array_input2
   slot_out: angles
-- node_in: switch0
-  node_out: constantarray0
-  slot_in: selector
-  slot_out: out
 - node_in: table0
   node_out: constantarray1
   slot_in: new_entry
@@ -303,6 +299,10 @@ links:
   node_out: tableselectarray0
   slot_in: array_input3
   slot_out: output_array
+- node_in: switch0
+  node_out: tableselectarray0
+  slot_in: selector
+  slot_out: output_array
 - node_in: extendedtable2
   node_out: tableselectarray1
   slot_in: array_input1
@@ -507,8 +507,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -739
-      - 875
+      - -1162
+      - 913
       viewers:
         out:
           collapsed: false
@@ -599,8 +599,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -743
-      - 467
+      - -848
+      - 432
       viewers:
         out:
           collapsed: false
@@ -620,8 +620,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -1003
-      - 173
+      - -991
+      - 159
       viewers:
         out:
           collapsed: false
@@ -1815,8 +1815,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - -1164
-      - 652
+      - -1162
+      - 717
       viewers:
         output_array:
           collapsed: false
@@ -1878,8 +1878,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - -1164
-      - 455
+      - -1162
+      - 469
       viewers:
         output_string:
           collapsed: false
@@ -2090,10 +2090,10 @@ nodes:
         max_frequency: 2.0
       video_stream:
         capture_mode: screen
-        crop_bottom: 601
-        crop_left: 587
-        crop_right: 1049
-        crop_top: 406
+        crop_bottom: 0
+        crop_left: 0
+        crop_right: 0
+        crop_top: 0
         device_index: 1
         mirror: false
   welfordsztransform0:
