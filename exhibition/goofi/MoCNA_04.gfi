@@ -23,19 +23,15 @@ links:
   node_out: buffer3
   slot_in: b
   slot_out: out
-- node_in: buffer1
-  node_out: compass0
-  slot_in: val
-  slot_out: angles
 - node_in: extendedtable0
-  node_out: compass0
+  node_out: compass1
   slot_in: array_input2
   slot_out: angles
-- node_in: table0
-  node_out: constantarray1
-  slot_in: new_entry
-  slot_out: out
-- node_in: compass0
+- node_in: buffer1
+  node_out: compass1
+  slot_in: val
+  slot_out: angles
+- node_in: compass1
   node_out: constantarray2
   slot_in: pole1
   slot_out: out
@@ -55,6 +51,10 @@ links:
   node_out: eegembedding0
   slot_in: array
   slot_out: embeddings
+- node_in: table0
+  node_out: eegheadsetdetection0
+  slot_in: new_entry
+  slot_out: headset_status
 - node_in: operation1
   node_out: embedding0
   slot_in: a
@@ -115,7 +115,7 @@ links:
   node_out: joinstring1
   slot_in: string_input2
   slot_out: output
-- node_in: welfordsztransform1
+- node_in: normalization1
   node_out: lempelziv0
   slot_in: data
   slot_out: lzc
@@ -135,13 +135,17 @@ links:
   node_out: lslclient1
   slot_in: data
   slot_out: out
+- node_in: join0
+  node_out: normalization1
+  slot_in: b
+  slot_out: normalized
+- node_in: extendedtable0
+  node_out: normalization1
+  slot_in: array_input5
+  slot_out: normalized
 - node_in: switch0
   node_out: operation1
   slot_in: array3
-  slot_out: out
-- node_in: welfordsztransform0
-  node_out: operation2
-  slot_in: data
   slot_out: out
 - node_in: reshape3
   node_out: operation3
@@ -215,7 +219,7 @@ links:
   node_out: reshape0
   slot_in: b
   slot_out: out
-- node_in: compass0
+- node_in: compass1
   node_out: reshape1
   slot_in: pole2
   slot_out: out
@@ -239,13 +243,13 @@ links:
   node_out: select1
   slot_in: data
   slot_out: out
-- node_in: eegheadsetdetection0
-  node_out: select1
-  slot_in: eeg_data
-  slot_out: out
 - node_in: reduce2
   node_out: select1
   slot_in: array
+  slot_out: out
+- node_in: eegheadsetdetection0
+  node_out: select1
+  slot_in: eeg_data
   slot_out: out
 - node_in: extendedtable1
   node_out: select4
@@ -359,21 +363,17 @@ links:
   node_out: videostream0
   slot_in: data
   slot_out: frame
+- node_in: normalization0
+  node_out: operation2
+  slot_in: data
+  slot_out: out
 - node_in: join0
-  node_out: welfordsztransform0
+  node_out: normalization0
   slot_in: a
   slot_out: normalized
 - node_in: extendedtable0
-  node_out: welfordsztransform0
+  node_out: normalization0
   slot_in: array_input4
-  slot_out: normalized
-- node_in: join0
-  node_out: welfordsztransform1
-  slot_in: b
-  slot_out: normalized
-- node_in: extendedtable0
-  node_out: welfordsztransform1
-  slot_in: array_input5
   slot_out: normalized
 nodes:
   appendtables0:
@@ -442,7 +442,7 @@ nodes:
     category: signal
     gui_kwargs:
       pos:
-      - 2407
+      - 2507
       - 1531
       viewers:
         out:
@@ -456,7 +456,7 @@ nodes:
       buffer:
         axis: -1
         reset: false
-        size: 360
+        size: 100
       common:
         autotrigger: false
         max_frequency: 30.0
@@ -483,13 +483,13 @@ nodes:
       common:
         autotrigger: false
         max_frequency: 30.0
-  compass0:
+  compass1:
     _type: Compass
     category: analysis
     gui_kwargs:
       pos:
-      - 2199
-      - 1530
+      - 2229
+      - 1417
       viewers:
         angles:
           collapsed: false
@@ -553,8 +553,8 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - 1967
-      - 1365
+      - 1965
+      - 1384
       viewers:
         out:
           collapsed: false
@@ -566,7 +566,7 @@ nodes:
     params:
       common:
         autotrigger: true
-        max_frequency: 30.0
+        max_frequency: 5.0
       constant:
         graph: none
         shape: '2'
@@ -716,8 +716,8 @@ nodes:
     category: signal
     gui_kwargs:
       pos:
-      - -779
-      - 2226
+      - -775
+      - 2139
       viewers:
         headset_status:
           collapsed: false
@@ -728,24 +728,24 @@ nodes:
           width: 175
     params:
       common:
-        autotrigger: false
+        autotrigger: true
         max_frequency: 30.0
       threshold:
-        average_value: 500.0
+        average_value: 850.0
   eegrecording1:
     _type: EEGRecording
     category: inputs
     gui_kwargs:
       pos:
       - -629
-      - 1771
+      - 1758
       viewers: {}
     params:
       common:
         autotrigger: false
         max_frequency: 30.0
       recording:
-        file_path: EEG_muse_recording_Antoine_test.csv
+        file_path: EEG_muse_recording_Antoine.csv
         file_sfreq: 256.0
         source_name: muse
         stream_name: recording
@@ -1044,13 +1044,36 @@ nodes:
         name_column: false
         select: ''
         type: embedding_csv
+  lslclient0:
+    _type: LSLClient
+    category: inputs
+    gui_kwargs:
+      pos:
+      - -901
+      - 1836
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: true
+        max_frequency: 30.0
+      lsl_stream:
+        refresh: false
+        source_name: Muse00:55:DA:BB:97:E0
+        stream_name: ''
   lslclient1:
     _type: LSLClient
     category: inputs
     gui_kwargs:
       pos:
-      - -635
-      - 1839
+      - -630
+      - 1827
       viewers:
         out:
           collapsed: false
@@ -1067,6 +1090,74 @@ nodes:
         refresh: false
         source_name: muse
         stream_name: ''
+  normalization0:
+    _type: Normalization
+    category: signal
+    gui_kwargs:
+      pos:
+      - 1535
+      - 1366
+      viewers:
+        normalized:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      minmax:
+        feature_max: 1.0
+        feature_min: 0.0
+      normalization:
+        axis: -1
+        buffer_size: 1024
+        method: z-score
+        reset: false
+      quantile:
+        n_quantiles: 1000
+        output_distribution: uniform
+      robust:
+        quantile_max: 75
+        quantile_min: 25
+        unit_variance: false
+  normalization1:
+    _type: Normalization
+    category: signal
+    gui_kwargs:
+      pos:
+      - 1531
+      - 1572
+      viewers:
+        normalized:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      minmax:
+        feature_max: 1.0
+        feature_min: 0.0
+      normalization:
+        axis: -1
+        buffer_size: 5000
+        method: z-score
+        reset: false
+      quantile:
+        n_quantiles: 1000
+        output_distribution: uniform
+      robust:
+        quantile_max: 75
+        quantile_min: 25
+        unit_variance: false
   operation0:
     _type: Operation
     category: array
@@ -1114,8 +1205,8 @@ nodes:
     category: array
     gui_kwargs:
       pos:
-      - 1336
-      - 1519
+      - 1288
+      - 1428
       viewers:
         out:
           collapsed: false
@@ -1199,7 +1290,7 @@ nodes:
     gui_kwargs:
       pos:
       - 11
-      - 2187
+      - 2188
       viewers:
         out:
           collapsed: false
@@ -1396,7 +1487,7 @@ nodes:
         autotrigger: true
         max_frequency: 30.0
       random:
-        dimensions: 128, 4
+        dimensions: 128, 2
         distribution: normal
         normalize_eigenvalue: false
         reset: false
@@ -1640,7 +1731,7 @@ nodes:
         axis: 0
         exclude: Right AUX
         expand_asterisk: false
-        include: ''
+        include: RAW_AF7, RAW_AF8
   select4:
     _type: Select
     category: array
@@ -2096,52 +2187,6 @@ nodes:
         crop_top: 0
         device_index: 1
         mirror: false
-  welfordsztransform0:
-    _type: WelfordsZTransform
-    category: signal
-    gui_kwargs:
-      pos:
-      - 1547
-      - 1520
-      viewers:
-        normalized:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-      welford:
-        biased_std: false
-        outlier_stds: 4.0
-        reset: true
-  welfordsztransform1:
-    _type: WelfordsZTransform
-    category: signal
-    gui_kwargs:
-      pos:
-      - 1542
-      - 1776
-      viewers:
-        normalized:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-      welford:
-        biased_std: false
-        outlier_stds: 4.0
-        reset: true
   writecsv0:
     _type: WriteCsv
     category: outputs
