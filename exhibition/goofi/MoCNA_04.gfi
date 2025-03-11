@@ -136,6 +136,14 @@ links:
   slot_in: data
   slot_out: out
 - node_in: join0
+  node_out: normalization0
+  slot_in: a
+  slot_out: normalized
+- node_in: extendedtable0
+  node_out: normalization0
+  slot_in: array_input4
+  slot_out: normalized
+- node_in: join0
   node_out: normalization1
   slot_in: b
   slot_out: normalized
@@ -179,11 +187,11 @@ links:
   node_out: oscin0
   slot_in: input_table
   slot_out: message
-- node_in: operation2
+- node_in: operation7
   node_out: powerbandeeg0
   slot_in: a
   slot_out: theta
-- node_in: operation2
+- node_in: operation7
   node_out: powerbandeeg0
   slot_in: b
   slot_out: alpha
@@ -315,13 +323,13 @@ links:
   node_out: tableselectarray2
   slot_in: array_input2
   slot_out: output_array
-- node_in: embedding0
-  node_out: tableselectstring1
-  slot_in: text
-  slot_out: output_string
 - node_in: joinstring0
   node_out: tableselectstring1
   slot_in: string1
+  slot_out: output_string
+- node_in: embedding0
+  node_out: tableselectstring1
+  slot_in: text
   slot_out: output_string
 - node_in: joinstring0
   node_out: tabletostring0
@@ -364,17 +372,9 @@ links:
   slot_in: data
   slot_out: frame
 - node_in: normalization0
-  node_out: operation2
+  node_out: operation7
   slot_in: data
   slot_out: out
-- node_in: join0
-  node_out: normalization0
-  slot_in: a
-  slot_out: normalized
-- node_in: extendedtable0
-  node_out: normalization0
-  slot_in: array_input4
-  slot_out: normalized
 nodes:
   appendtables0:
     _type: AppendTables
@@ -731,14 +731,14 @@ nodes:
         autotrigger: true
         max_frequency: 30.0
       threshold:
-        average_value: 850.0
+        average_value: 500.0
   eegrecording1:
     _type: EEGRecording
     category: inputs
     gui_kwargs:
       pos:
       - -629
-      - 1758
+      - 1757
       viewers: {}
     params:
       common:
@@ -1072,7 +1072,7 @@ nodes:
     category: inputs
     gui_kwargs:
       pos:
-      - -630
+      - -631
       - 1827
       viewers:
         out:
@@ -1116,7 +1116,7 @@ nodes:
         axis: -1
         buffer_size: 1024
         method: z-score
-        reset: false
+        reset: true
       quantile:
         n_quantiles: 1000
         output_distribution: uniform
@@ -1200,27 +1200,6 @@ nodes:
         max_frequency: 30.0
       operation:
         operation: max
-  operation2:
-    _type: Operation
-    category: array
-    gui_kwargs:
-      pos:
-      - 1288
-      - 1428
-      viewers:
-        out:
-          collapsed: false
-          height: 100
-          log_scale_x: false
-          log_scale_y: false
-          viewer_idx: 0
-          width: 175
-    params:
-      common:
-        autotrigger: false
-        max_frequency: 30.0
-      operation:
-        operation: divide
   operation3:
     _type: Operation
     category: array
@@ -1305,6 +1284,27 @@ nodes:
         max_frequency: 30.0
       operation:
         operation: matmul
+  operation7:
+    _type: Operation
+    category: array
+    gui_kwargs:
+      pos:
+      - 1315
+      - 1374
+      viewers:
+        out:
+          collapsed: false
+          height: 100
+          log_scale_x: false
+          log_scale_y: false
+          viewer_idx: 0
+          width: 175
+    params:
+      common:
+        autotrigger: false
+        max_frequency: 30.0
+      operation:
+        operation: divide
   oscin0:
     _type: OSCIn
     category: inputs
@@ -1490,7 +1490,7 @@ nodes:
         dimensions: 128, 2
         distribution: normal
         normalize_eigenvalue: false
-        reset: false
+        reset: true
   reduce0:
     _type: Reduce
     category: array
@@ -1731,7 +1731,7 @@ nodes:
         axis: 0
         exclude: Right AUX
         expand_asterisk: false
-        include: RAW_AF7, RAW_AF8
+        include: AF7, AF8
   select4:
     _type: Select
     category: array
@@ -1857,8 +1857,8 @@ nodes:
     category: misc
     gui_kwargs:
       pos:
-      - -113
-      - 662
+      - -11
+      - 693
       viewers:
         array_out:
           collapsed: false
